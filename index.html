@@ -143,6 +143,27 @@ img.av{width:96px;height:96px;object-fit:cover;display:block;border:2px solid va
 .khb{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.5);color:#fff;padding:8px 12px;border-radius:10px;font-weight:600;line-height:1.5}
 .khc{position:absolute;inset:0;display:grid;place-items:center;font-size:96px;font-weight:700;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.6)}
 .khp{position:absolute;left:50%;top:12%;transform:translateX(-50%);background:rgba(0,0,0,.65);color:#fff;padding:14px 22px;border-radius:12px;text-align:center;min-width:240px}.khp b{font-size:22px;display:block;margin-bottom:6px}
+#ki{position:fixed;inset:0;z-index:25;background:#101828 repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 3px,transparent 3px 60px);display:grid;place-content:center;transition:transform .9s cubic-bezier(.7,0,.3,1);box-shadow:0 24px 60px rgba(0,0,0,.5);cursor:pointer}
+#ki.go{transform:translateY(105%)}
+.kit{display:flex;justify-content:center;font:800 clamp(40px,13vw,120px) Fraunces,Georgia,serif;color:#fff}
+.kit span{opacity:0;transform:translateY(-70px) scale(1.5);animation:kil .55s cubic-bezier(.2,1.4,.4,1) forwards}
+.kit span:last-child{color:#f59f00}
+.kis{color:#9fb3c8;text-align:center;letter-spacing:.3em;text-transform:uppercase;font-size:13px;margin-top:8px;opacity:0;animation:kil .6s 1s forwards}
+@keyframes kil{to{opacity:1;transform:none}}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.kc{border:2px solid rgba(128,128,128,.3);border-radius:14px;padding:10px;text-align:center;cursor:pointer}.kc.on{border-color:var(--acc)}
+.kpv{display:block;position:relative;width:96px;height:44px;margin:6px auto 10px}
+.kpv:before{content:'';position:absolute;inset:6px 0 8px;background:var(--c);border-radius:8px 24px 24px 8px}
+.kpv:after{content:'';position:absolute;left:8px;right:8px;bottom:0;height:16px;background:radial-gradient(circle at 12px 8px,#111 0 8px,transparent 9px),radial-gradient(circle at calc(100% - 12px) 8px,#111 0 8px,transparent 9px)}
+.kch{display:block;position:relative;width:90px;height:120px}
+.kch:before{content:'';position:absolute;left:25px;top:4px;width:40px;height:40px;border-radius:50%;background:var(--sk)}
+.kch i{position:absolute;left:21px;top:0;width:48px;height:22px;border-radius:24px 24px 4px 4px;background:var(--sh);z-index:1}
+.kch:after{content:'';position:absolute;left:15px;top:50px;width:60px;height:62px;border-radius:18px 18px 10px 10px;background:var(--sh)}
+.kw{display:flex;gap:10px;flex-wrap:wrap}
+.ksw{width:44px;height:44px;border-radius:50%;border:3px solid transparent;box-shadow:0 0 0 1px rgba(0,0,0,.25);cursor:pointer}.ksw.on{border-color:var(--acc)}
+#kctl{position:absolute;left:0;right:0;bottom:0;display:none;justify-content:space-between;align-items:flex-end;padding:14px;pointer-events:none}
+#kctl>div{display:flex;gap:12px;align-items:flex-end}
+.kp{pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;border:0;border-radius:20px;color:#fff;font-weight:700;font-size:20px;cursor:pointer;opacity:.82}.kp.d{opacity:1;transform:scale(.95)}
 </style></head>
 <body><div id="app"></div>
 <script>
@@ -175,8 +196,9 @@ const ROLEN={admin:'Admin',moderator:'Moderator',schueler:'Schüler',gesperrt:'G
 const TY={book:{n:'Schulbücher',s:'Alle Schulbücher online',one:'Neues Buch'},stoff:{n:'Stoff',s:'Zusammenfassungen und Material',one:'Neuer Stoff'},notes:{n:'Mitschriften',s:'Eigene Notizen und GoodNotes-PDFs',one:'Neue Mitschrift'},all:{n:'Suche'}};
 
 /* ===== Version und Neuerungen: bei jedem Update VERSION erhöhen und oben einen Eintrag in CHANGELOG ergänzen ===== */
-const VERSION='2026-11-19.5';
+const VERSION='2026-11-19.6';
 const CHANGELOG=[
+ {v:'2026-11-19.6',t:'Kart-Rennen: Auswahl und neue Steuerung',items:['Neuer Startbildschirm KartFahrt0 mit Animation. Danach wählst du Auto, Charakter (Hautton und Farbe) und zuletzt die Strecke.','Die Autos haben unterschiedliche Werte für Tempo, Start und Lenkung.','Steuerung: Links lenken, rechts Gas und Bremse. Am PC mit den Pfeiltasten, Gas gibst du jetzt selbst.','Bei Spiele ist der Knopf „Mit Freunden“ weg. Den Modus stellst du direkt im Spiel ein.']},
  {v:'2026-11-19.5',t:'Kart-Rennen: größere Strecken und Bereit-Knopf',items:['Drei neue, deutlich größere Strecken mit Haarnadelkurven und Schlangenlinien.','Die Eisabfahrt ist rutschig: Dein Kart driftet in den Kurven, das ist schwerer.','Auf allen Strecken liegen Ölflecken. Wer hineinfährt, dreht sich und wird langsamer.','Vor dem Start muss jeder auf „Bereit“ tippen. Sind alle bereit, zählt der Countdown von 3 herunter.']},
  {v:'2026-11-19.4',t:'Kart-Rennen in 3D',items:['Das Kart-Rennen ist jetzt in 3D: Du fährst hinter deinem Kart über Strecken mit Bäumen, Bande und Startbogen.','Du wählst Gegen Computer oder Mehrspieler. Die Karte findest du bei Spiele neben Tic Tac Toe.']},
  {v:'2026-11-19.3',t:'Kart-Rennen',items:['Neu bei Spiele: Kart-Rennen mit 3 Strecken (Wiesenring, Wüstenschlange, Eisgipfel) und 3 Runden.','Allein fährst du gegen 3 Computer-Fahrer. Mit einem Raumcode fährst du online mit Freunden und kannst sie direkt einladen.','Steuern: Pfeiltasten oder die Knöpfe unter dem Spielfeld, Gas ist automatisch.']},
@@ -952,17 +974,19 @@ const KTR=[
  {n:'Wiesen-GP',g:'#4c9a3a',s:'#8ec9ff',t:'#2f7d32',r:'#555',e:'#c33',hw:72,d:'Lange Strecke mit Haarnadelkurve und S-Kurven. Achtung, Ölflecken!',p:[[-1000,-100],[-850,-500],[-450,-650],[0,-500],[300,-700],[750,-650],[1050,-300],[900,100],[500,200],[250,450],[300,750],[-100,850],[-550,700],[-600,350],[-950,300]]},
  {n:'Wüstenschlange',g:'#d9b45f',s:'#ffd9a0',t:'#7a9a3b',r:'#6b5a46',e:'#fff',hw:66,d:'Viele enge Schlangenlinien. Ölflecken machen dich schwindelig.',p:[[-1200,-100],[-1100,-520],[-700,-720],[-350,-380],[0,-700],[400,-380],[800,-720],[1200,-300],[1100,200],[700,420],[300,220],[-100,520],[-500,320],[-900,520],[-1230,300]]},
  {n:'Eisabfahrt',ice:1,g:'#e8f2fa',s:'#cfe6f7',t:'#9cc7e8',r:'#8fb8d8',e:'#2b6cb0',hw:68,d:'Spiegelglatt: Dein Kart rutscht in den Kurven. Dazu Ölflecken, nur für Profis.',p:[[-300,-900],[500,-800],[1000,-500],[700,-200],[0,-300],[-700,-100],[-1000,300],[-600,600],[100,500],[800,700],[1200,1000],[600,1250],[-300,1150],[-1000,1000],[-1400,500],[-1450,-300],[-1100,-800]]}];
+const KCAR=[{n:'Allrounder',c:'#e8590c',L:1,t:3,a:4,l:3},{n:'Flitzer',c:'#1c7ed6',L:1.15,t:5,a:3,l:2},{n:'Wendig',c:'#2f9e44',L:.95,t:2,a:3,l:5},{n:'Starter',c:'#ae3ec9',L:1.05,t:2,a:5,l:3}],
+ SK=['#ffe0bd','#f1c27d','#c68642','#8d5524','#5c3a1e'],SC=['#d62828','#1c7ed6','#2f9e44','#f59f00','#ae3ec9','#222222'];
 const LAPS=3,KPAL=['#fab005','#15aabf','#e64980','#82c91e','#7950f2'];
-let KT={mode:'cpu',tr:0,room:'',state:'idle',in:{},o:{},ks:[],fin:[],sent:0,ts:0,ch:null,cn:'',c:null,raf:0,ca:0,t0:0};
+let KT={mode:'cpu',step:0,car:0,skin:1,col:0,tr:0,room:'',state:'idle',in:{},o:{},ks:[],fin:[],sent:0,ts:0,ch:null,cn:'',c:null,raf:0,ca:0,t0:0};
 const nd=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a};
 function kT(i){const t=KTR[i];if(!t.pts){const P=t.p,n=P.length,pts=[];
  for(let i=0;i<n;i++){const a=P[(i+n-1)%n],b=P[i],c=P[(i+1)%n],d=P[(i+2)%n];for(let q=0;q<24;q++){const u=q/24,u2=u*u,u3=u2*u;pts.push([0,1].map(k=>.5*(2*b[k]+(-a[k]+c[k])*u+(2*a[k]-5*b[k]+4*c[k]-d[k])*u2+(-a[k]+3*b[k]-3*c[k]+d[k])*u3)))}}
  t.pts=pts;t.oil=[.12,.33,.55,.78].map((f,i)=>{const j=Math.floor(f*pts.length),a=pts[j],b=pts[(j+1)%pts.length],l=Math.hypot(b[0]-a[0],b[1]-a[1])||1,d=(i%2?1:-1)*t.hw*.35;return{x:a[0]-(b[1]-a[1])/l*d,y:a[1]+(b[0]-a[0])/l*d}});t.b=[Math.min(...pts.map(q=>q[0])),Math.min(...pts.map(q=>q[1])),Math.max(...pts.map(q=>q[0])),Math.max(...pts.map(q=>q[1]))]}return t}
 function k3Load(){return window.THREE?Promise.resolve():new Promise((ok,no)=>{const e=document.createElement('script');e.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';e.onload=ok;e.onerror=no;document.head.append(e)})}
-function k3Kart(c){
- const th=THREE,g=new th.Group(),B=(w,h,d,col,x,y,z)=>{const m=new th.Mesh(new th.BoxGeometry(w,h,d),new th.MeshLambertMaterial({color:col}));m.position.set(x,y,z);g.add(m)};
- B(34,8,20,c,0,8,0);B(12,5,14,c,12,12,0);B(4,12,24,c,-17,13,0);B(8,10,8,0xffe0bd,-3,18,0);B(9,5,9,0xffffff,-3,24,0);
- [[-11,-12],[-11,12],[11,-12],[11,12]].forEach(([x,z])=>B(10,10,5,0x151515,x,5,z));return g
+function k3Kart(ci,si,hi){
+ const th=THREE,cs=KCAR[ci]||KCAR[0],L=cs.L,sh=SC[hi]||SC[0],g=new th.Group(),B=(w,h,d,col,x,y,z)=>{const m=new th.Mesh(new th.BoxGeometry(w,h,d),new th.MeshLambertMaterial({color:col}));m.position.set(x,y,z);g.add(m)};
+ B(34*L,8,20,cs.c,0,8,0);B(12,5,14,cs.c,12*L,12,0);B(4,12,24,cs.c,-17*L,13,0);B(8,8,14,sh,-3,15,0);B(9,10,9,SK[si]||SK[0],-3,21,0);B(10,5,10,sh,-3,27,0);
+ [[-11*L,-12],[-11*L,12],[11*L,-12],[11*L,12]].forEach(([x,z])=>B(10,10,5,0x151515,x,5,z));return g
 }
 function k3Build(){
  if(!KT.R||!KT.T)return;const th=THREE,T=KT.T,p=T.pts,N=p.length,rc=new th.Color(T.r).toArray();
@@ -987,13 +1011,13 @@ function k3Build(){
 }
 function kNear(k,all){const p=KT.T.pts,N=p.length;let best=1e12,bi=k.idx;for(let q=all?0:-8;q<(all?N:9);q++){const j=all?q:(k.idx+q+N)%N,dx=p[j][0]-k.x,dy=p[j][1]-k.y,d=dx*dx+dy*dy;if(d<best){best=d;bi=j}}k.idx=bi;k.d=Math.sqrt(best)}
 function kMk(o,s){const T=KT.T,p=T.pts,a=Math.atan2(p[1][1]-p[0][1],p[1][0]-p[0][0]),back=40+s*38,lat=(s%2?1:-1)*T.hw*.4;
- return Object.assign({x:p[0][0]-Math.cos(a)*back-Math.sin(a)*lat,y:p[0][1]-Math.sin(a)*back+Math.cos(a)*lat,a,ha:a,sp:-9,v:0,lap:0,half:1,idx:0,d:0},o)}
+ return Object.assign({x:p[0][0]-Math.cos(a)*back-Math.sin(a)*lat,y:p[0][1]-Math.sin(a)*back+Math.cos(a)*lat,a,ha:a,sp:-9,top:330,acc:260,trn:2.5,ci:0,si:0,hi:0,v:0,lap:0,half:1,idx:0,d:0},o)}
 function kStart(tr){
  KT.tr=tr;KT.T=kT(tr);const solo=!KT.ch;
- KT.ks=[kMk({me:1,n:'Du',c:'#e8590c'},solo?0:Math.floor(Math.random()*4))];
- if(solo)['Bot Max','Bot Lia','Bot Tom'].forEach((n,i)=>KT.ks.push(kMk({bot:1,f:[.8,.87,.93][i],n,c:['#2f9e44','#1c7ed6','#ae3ec9'][i]},i+1)));
+ KT.ks=[kMk({me:1,n:'Du',ci:KT.car,si:KT.skin,hi:KT.col,top:300+10*KCAR[KT.car].t,acc:140+40*KCAR[KT.car].a,trn:1.9+.2*KCAR[KT.car].l},solo?0:Math.floor(Math.random()*4))];
+ if(solo)['Bot Max','Bot Lia','Bot Tom'].forEach((n,i)=>KT.ks.push(kMk({bot:1,f:[.8,.87,.93][i],n,ci:i+1,si:(i*2+1)%5,hi:i+2},i+1)));
  KT.ks.forEach(k=>kNear(k,1));
- Object.assign(KT,{state:'lobby',t0:0,fin:[],o:{},ca:KT.ks[0].a});kSel(tr,1)
+ Object.assign(KT,{state:'lobby',t0:0,fin:[],o:{},ca:KT.ks[0].a});kSel(tr,1);kView()
 }
 function kSel(i,q){
  if(!q&&KT.state!='idle'&&KT.state!='done')return;
@@ -1014,12 +1038,36 @@ function kNet(){
  KT.ch=sb.channel('kart:'+r)
   .on('broadcast',{event:'p'},m=>{const q=m.payload;if(!q||q.id==ME.id)return;
    const o=KT.o[q.id]||(KT.o[q.id]={x:q.x,y:q.y,a:q.a,c:KPAL[[...q.id].reduce((a,c)=>a+c.charCodeAt(0),0)%5]});
-   Object.assign(o,{tx:q.x,ty:q.y,ta:q.a,p:q.p,r:q.r,n:q.n,seen:performance.now()})})
+   Object.assign(o,{tx:q.x,ty:q.y,ta:q.a,p:q.p,r:q.r,ci:q.ci,si:q.si,hi:q.hi,n:q.n,seen:performance.now()})})
   .on('broadcast',{event:'go'},m=>{if(KTR[m.payload.tr])kStart(m.payload.tr)})
   .on('broadcast',{event:'fin'},m=>{const q=m.payload;if(q&&!KT.fin.some(r=>r.n==q.n))KT.fin.push({n:q.n,t:q.t})})
   .subscribe()
 }
 function kMode(m){KT.mode=m;render()}
+function kIntro(){
+ if(KT.seen)return;KT.seen=1;
+ const d=document.createElement('div');d.id='ki';
+ d.innerHTML=`<div class="kit">${[...'KartFahrt0'].map((c,i)=>`<span style="animation-delay:${i*80}ms">${c}</span>`).join('')}</div><div class="kis">3D Rennspiel</div>`;
+ document.body.append(d);let done=0;
+ const fin=()=>{if(done)return;done=1;d.classList.add('go');setTimeout(()=>d.remove(),1000)};
+ d.onclick=fin;setTimeout(fin,2300)
+}
+function kView(){
+ const g=KT.state!='idle',m=$('#kmenu'),w=$('#kgame');if(!m||!w)return;
+ m.style.display=g?'none':'';w.style.display=(g||KT.step==2)?'':'none';
+ $('#kback').style.display=g?'':'none';$('#kctl').style.display=g?'flex':'none'
+}
+function kStepTo(n){
+ n=Math.max(0,Math.min(2,n));KT.step=n;
+ document.querySelectorAll('.ksp').forEach(e=>e.style.display=e.dataset.s==n?'':'none');
+ document.querySelectorAll('.tab[data-s]').forEach(e=>e.classList.toggle('on',e.dataset.s==n));
+ const a=$('#kpv0'),b=$('#knx');if(a)a.style.display=n?'':'none';if(b)b.style.display=n<2?'':'none';kView()
+}
+function kPick(t,i){
+ KT[t]=i;document.querySelectorAll(`[data-p="${t}"]`).forEach(b=>b.classList.toggle('on',b.dataset.i==i));
+ const pv=$('#kchp');if(pv){pv.style.setProperty('--sk',SK[KT.skin]);pv.style.setProperty('--sh',SC[KT.col])}
+}
+function kBack(){if(KT.state=='idle')return;KT.state='idle';KT.ks=[];KT.o={};KT.in={};kView()}
 function kReady(){const me=KT.ks[0];if(KT.state!='lobby'||!me||me.rdy)return;me.rdy=1;KT.sent=0}
 function kRand(){const r=Math.random().toString(36).slice(2,6);$('#kr').value=r;KT.room=r;kNet();return r}
 async function kInv(){
@@ -1033,12 +1081,12 @@ function kFin(k,ts){
  if(k.me){KT.state='done';k.bot=1;k.f=.9;if(KT.ch)KT.ch.send({type:'broadcast',event:'fin',payload:{n:nm(ME.id),t:k.fin}})}
 }
 function kUpd(k,dt,ts){
- const T=KT.T,p=T.pts,N=p.length;let s=0,b=0,mx=T.ice?290:330;k.sp-=dt;
+ const T=KT.T,p=T.pts,N=p.length;let s=0,b=0,mx=T.ice?k.top*.88:k.top,g=1;k.sp-=dt;
  if(k.bot){const t=p[(k.idx+9)%N],d=nd(Math.atan2(t[1]-k.y,t[0]-k.x)-k.a);s=Math.max(-1,Math.min(1,d*2.5));mx=mx*k.f*(1-.35*Math.min(1,Math.abs(d)))}
- else{s=(KT.in.r?1:0)-(KT.in.l?1:0);b=KT.in.b}
+ else{s=(KT.in.r?1:0)-(KT.in.l?1:0);b=KT.in.b;g=KT.in.g}
  const m=k.d<=T.hw?mx:mx*.45;
- k.v+=(b?-480:k.v<m?(T.ice?170:260):-320)*dt;k.v=Math.max(0,Math.min(330,k.v));
- if(k.sp>0){k.a+=10*dt;k.v*=1-1.3*dt}else k.a+=s*2.5*dt*Math.min(1,k.v/110);
+ k.v+=(b?-480:g?(k.v<m?(T.ice?k.acc*.65:k.acc):-320):-120)*dt;k.v=Math.max(0,Math.min(k.top,k.v));
+ if(k.sp>0){k.a+=10*dt;k.v*=1-1.3*dt}else k.a+=s*k.trn*dt*Math.min(1,k.v/110);
  k.ha+=nd(k.a-k.ha)*Math.min(1,dt*(T.ice?1.5:9));
  k.x+=Math.cos(k.ha)*k.v*dt;k.y+=Math.sin(k.ha)*k.v*dt;
  for(const u of T.oil)if(k.sp<-1&&Math.hypot(u.x-k.x,u.y-k.y)<32){k.sp=1.1;k.v*=.5}
@@ -1055,7 +1103,7 @@ function kStep(dt,ts){
  if(KT.state=='race'||KT.state=='done')KT.ks.forEach(k=>kUpd(k,dt,ts));
  KT.ca+=nd(me.a-KT.ca)*Math.min(1,dt*7);
  for(const id in KT.o){const o=KT.o[id];if(ts-o.seen>3000){if(o.m&&KT.S)KT.S.remove(o.m);delete KT.o[id];continue}const f=Math.min(1,dt*12);o.x+=(o.tx-o.x)*f;o.y+=(o.ty-o.y)*f;o.a+=nd(o.ta-o.a)*f}
- if(KT.ch&&ts-KT.sent>90){KT.sent=ts;KT.ch.send({type:'broadcast',event:'p',payload:{id:ME.id,n:nm(ME.id),x:me.x|0,y:me.y|0,a:+me.a.toFixed(2),p:kProg(me),r:me.rdy?1:0}})}
+ if(KT.ch&&ts-KT.sent>90){KT.sent=ts;KT.ch.send({type:'broadcast',event:'p',payload:{id:ME.id,n:nm(ME.id),x:me.x|0,y:me.y|0,a:+me.a.toFixed(2),p:kProg(me),r:me.rdy?1:0,ci:me.ci,si:me.si,hi:me.hi}})}
 }
 function kHud(){
  const h=$('#kh');if(!h)return;let t='';
@@ -1070,13 +1118,13 @@ function kHud(){
 }
 function kDraw(){
  const c=KT.c,R=KT.R,S=KT.S;if(!R||!S)return;
- const W=c.clientWidth,H=c.clientHeight,cam=KT.cam;
+ const W=c.clientWidth,H=c.clientHeight,cam=KT.cam;if(!W||!H)return;
  if(KT.w!=W||KT.h!=H){KT.w=W;KT.h=H;R.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix()}
  if(KT.state=='idle'){const t=performance.now()/5000,b=KT.T.b,cx=(b[0]+b[2])/2,cz=(b[1]+b[3])/2,z=Math.max(b[2]-b[0],b[3]-b[1]);cam.position.set(cx+Math.cos(t)*z*.8,z*.55,cz+Math.sin(t)*z*.8);cam.lookAt(cx,0,cz)}
  else{
   const me=KT.ks[0],fx=Math.cos(KT.ca),fz=Math.sin(KT.ca);
   cam.position.set(me.x-fx*95,48,me.y-fz*95);cam.lookAt(me.x+fx*40,10,me.y+fz*40);
-  [...KT.ks,...Object.values(KT.o)].forEach(k=>{if(!k.m){k.m=k3Kart(k.c);S.add(k.m)}k.m.position.set(k.x,1,k.y);k.m.rotation.y=-k.a})
+  [...KT.ks,...Object.values(KT.o)].forEach(k=>{if(!k.m){k.m=k3Kart(k.ci,k.si,k.hi);S.add(k.m)}k.m.position.set(k.x,1,k.y);k.m.rotation.y=-k.a})
  }
  R.render(S,cam);kHud()
 }
@@ -1087,18 +1135,18 @@ function kLoop(ts){
 function kKey(e){
  if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;
  if(e.type=='keydown'&&(e.key=='Enter'||e.key==' ')&&KT.state=='lobby'){kReady();e.preventDefault();return}
- const k={ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r',ArrowDown:'b',s:'b'}[e.key];
- if(k){KT.in[k]=e.type=='keydown'?1:0;e.preventDefault()}
+ const k={ArrowLeft:'l',a:'l',ArrowRight:'r',d:'r',ArrowDown:'b',s:'b',ArrowUp:'g',w:'g'}[e.key];
+ if(k){KT.in[k]=e.type=='keydown'?1:0;if(KT.state!='idle')e.preventDefault()}
 }
 async function kInit(){
  kStop();const c=$('#kc');if(!c)return;
- Object.assign(KT,{c,state:'idle',ks:[],o:{},in:{},T:kT(KT.tr)});
+ Object.assign(KT,{c,state:'idle',ks:[],o:{},in:{},T:kT(KT.tr)});kIntro();kStepTo(KT.step);
  try{await k3Load()}catch(e){return toast('Das 3D-Spiel konnte nicht geladen werden. Prüfe deine Internetverbindung.')}
  if($('#kc')!==c)return;
  try{KT.R=new THREE.WebGLRenderer({canvas:c,antialias:true})}catch(e){return toast('Dein Gerät kann 3D im Browser nicht darstellen.')}
  KT.R.setPixelRatio(Math.min(devicePixelRatio||1,1.5));KT.cam=new THREE.PerspectiveCamera(70,1,4,9000);k3Build();
  addEventListener('keydown',kKey);addEventListener('keyup',kKey);
- document.querySelectorAll('.kb [data-k]').forEach(b=>{const k=b.dataset.k;b.onpointerdown=e=>{KT.in[k]=1;e.preventDefault()};b.onpointerup=b.onpointerleave=b.onpointercancel=()=>{KT.in[k]=0};b.oncontextmenu=e=>e.preventDefault()});
+ document.querySelectorAll('#kctl [data-k]').forEach(b=>{const k=b.dataset.k;b.onpointerdown=e=>{KT.in[k]=1;b.classList.add('d');e.preventDefault()};b.onpointerup=b.onpointerleave=b.onpointercancel=()=>{KT.in[k]=0;b.classList.remove('d')};b.oncontextmenu=e=>e.preventDefault()});
  if(KT.mode=='multi'&&KT.room){KT.cn='';kNet()}
  KT.ts=performance.now();KT.raf=requestAnimationFrame(kLoop)
 }
@@ -1163,8 +1211,10 @@ gruppe:()=>{const g=GRP.find(x=>x.id==P.g),mem=gmine(g);return `<div class="bar"
 gedit:()=>{const g=GRP.find(x=>x.id==P.g);return `<h1>Gruppe bearbeiten</h1><div class="card"><div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">${gav(g,72)}<label class="btn g" style="margin:0;font-size:15px">Gruppenbild<input type="file" accept="image/*" hidden onchange="gImg(this)"></label>${g.image_path?'<button class="btn g" onclick="gRmImg()">Entfernen</button>':''}</div><label>Name</label><input id="gnm" maxlength="40" value="${esc(g.name)}"><label>Beschreibung</label><textarea id="gdesc" rows="3" maxlength="500">${esc(g.descr)}</textarea>${g.is_public?'':'<label>Neues Passwort (leer lassen, wenn es gleich bleibt)</label><input id="gpw" type="password" autocomplete="new-password">'}<p style="margin:22px 0 0;display:flex;gap:10px;flex-wrap:wrap"><button class="btn o" onclick="gSave()">Speichern</button><button class="btn g" onclick="gDel('${g.id}')">Gruppe löschen</button></p></div>`},
 fwd:()=>{const x=DB.find(i=>i.id==P.id),fr=frs().friends,my=GRP.filter(gmine),b=(k,id)=>`<button class="btn ${FW[k+id]?'g':'o'}" onclick="fwdTo('${k}','${id}')">${FW[k+id]?'Nochmal senden':'Senden'}</button>`;
 return `<h1>Weiterleiten</h1><p class="m">${esc(x.title)}</p><h2>An Freunde</h2><div class="card" style="padding:6px 24px;max-width:none">${fr.map(id=>`<div class="row"><span>${pn(byId(id))}</span>${b('u',id)}</div>`).join('')||'<p class="m">Noch keine Freunde.</p>'}</div><h2>An Gruppen</h2><div class="card" style="padding:6px 24px;max-width:none">${my.map(g=>`<div class="row"><span style="display:flex;gap:12px;align-items:center">${gav(g,36)}${esc(g.name)}</span>${b('g',g.id)}</div>`).join('')||'<p class="m">Du bist in keiner Gruppe.</p>'}</div>`},
-kart:()=>{const cpu=KT.mode!='multi';return `<h1>Kart-Rennen 3D</h1><div class="bar" style="margin-top:0"><div class="seg" role="group" aria-label="Modus"><button class="${cpu?'on':''}" onclick="kMode('cpu')">Gegen Computer</button><button class="${cpu?'':'on'}" onclick="kMode('multi')">Mehrspieler</button></div></div><p class="m">Gas ist automatisch. Lenken mit ◀ ▶ oder den Pfeiltasten, bremsen mit ↓ oder dem Knopf. 3 Runden.</p><div class="card" style="max-width:none"><label style="margin-top:0">Strecke</label><div class="bar" style="margin:0" id="ktr">${KTR.map((t,i)=>`<button class="btn ${i==KT.tr?'o':'g'}" onclick="kSel(${i})">${t.n}</button>`).join('')}</div><p class="m" id="ktd" style="margin:10px 0 0">${KTR[KT.tr].d}</p>${cpu?'':`<label>Raumcode (alle Mitspieler geben denselben Code ein)</label><div class="bar" style="margin:0"><input id="kr" maxlength="12" value="${esc(KT.room)}" placeholder="z. B. kart1" onchange="KT.room=this.value.trim().toLowerCase();kNet()"><button class="btn g" onclick="kRand()">Zufälliger Code</button></div><div class="bar" style="margin:14px 0 0"><select id="kf">${frs().friends.map(id=>`<option value="${id}">${esc(nm(id))}</option>`).join('')}</select><button class="btn g" onclick="kInv()">Freund einladen</button></div>`}<p style="margin:16px 0 0"><button class="btn o" onclick="kGo()">Zur Startaufstellung</button></p></div><div style="position:relative;margin-top:14px"><canvas id="kc" style="width:100%;height:58vh;min-height:300px;border-radius:14px;touch-action:none;background:#222;display:block"></canvas><div id="kh" style="position:absolute;inset:0;pointer-events:none"></div></div><div class="bar kb" style="justify-content:center;margin-top:12px;touch-action:none;user-select:none;-webkit-user-select:none"><button class="btn g" style="min-width:96px;padding:18px 22px;font-size:20px" data-k="l">◀</button><button class="btn g" style="padding:18px 22px;font-size:18px" data-k="b">Bremsen</button><button class="btn g" style="min-width:96px;padding:18px 22px;font-size:20px" data-k="r">▶</button></div>`},
-spiele:()=>`<h1>Spiele</h1><p class="m">Eine kleine Pause zwischendurch.</p><div class="tiles" style="margin-top:20px">${tl([['game','Tic Tac Toe','Gegen den Computer oder zu zweit','ttt'],['user','Mit Freunden','Tic Tac Toe online, jeder an seinem Gerät','tttf'],['game','Kart-Rennen 3D','Gegen den Computer oder online mit Freunden','kart']])}</div>`,
+kart:()=>{const cpu=KT.mode!='multi',tb=(i,t)=>`<button class="tab" data-s="${i}" onclick="kStepTo(${i})">${i+1}. ${t}</button>`,dots=n=>'●'.repeat(n)+'○'.repeat(5-n),
+ sw=(t,a,l)=>a.map((c,i)=>`<button class="ksw ${i==KT[t]?'on':''}" data-p="${t}" data-i="${i}" style="background:${c}" aria-label="${l} ${i+1}" onclick="kPick('${t}',${i})"></button>`).join('');
+return `<h1>Kart-Rennen 3D</h1><div id="kmenu"><div class="bar" style="margin-top:0"><div class="seg" role="group" aria-label="Modus"><button class="${cpu?'on':''}" onclick="kMode('cpu')">Gegen Computer</button><button class="${cpu?'':'on'}" onclick="kMode('multi')">Mehrspieler</button></div></div><div class="tabs">${tb(0,'Auto')}${tb(1,'Charakter')}${tb(2,'Strecke')}</div><div class="card" style="max-width:none;margin-top:16px"><div class="ksp" data-s="0"><div class="kgrid">${KCAR.map((c,i)=>`<div class="kc ${i==KT.car?'on':''}" data-p="car" data-i="${i}" onclick="kPick('car',${i})"><span class="kpv" style="--c:${c.c}"></span><b>${c.n}</b><span class="m" style="display:block;font-size:13px">Tempo ${dots(c.t)}<br>Start ${dots(c.a)}<br>Lenkung ${dots(c.l)}</span></div>`).join('')}</div></div><div class="ksp" data-s="1"><div style="display:flex;gap:28px;flex-wrap:wrap;align-items:center"><span class="kch" id="kchp" style="--sk:${SK[KT.skin]};--sh:${SC[KT.col]}"><i></i></span><div><label style="margin-top:0">Hautton</label><div class="kw">${sw('skin',SK,'Hautton')}</div><label>Farbe</label><div class="kw">${sw('col',SC,'Farbe')}</div></div></div></div><div class="ksp" data-s="2"><label style="margin-top:0">Strecke</label><div class="bar" style="margin:0" id="ktr">${KTR.map((t,i)=>`<button class="btn ${i==KT.tr?'o':'g'}" onclick="kSel(${i})">${t.n}</button>`).join('')}</div><p class="m" id="ktd" style="margin:10px 0 0">${KTR[KT.tr].d}</p>${cpu?'':`<label>Raumcode (alle Mitspieler geben denselben Code ein)</label><div class="bar" style="margin:0"><input id="kr" maxlength="12" value="${esc(KT.room)}" placeholder="z. B. kart1" onchange="KT.room=this.value.trim().toLowerCase();kNet()"><button class="btn g" onclick="kRand()">Zufälliger Code</button></div><div class="bar" style="margin:14px 0 0"><select id="kf">${frs().friends.map(id=>`<option value="${id}">${esc(nm(id))}</option>`).join('')}</select><button class="btn g" onclick="kInv()">Freund einladen</button></div>`}<p style="margin:16px 0 0"><button class="btn o" onclick="kGo()">Zur Startaufstellung</button></p></div><div class="bar" style="margin:18px 0 0"><button class="btn g" id="kpv0" onclick="kStepTo(KT.step-1)">Zurück</button><button class="btn o" id="knx" onclick="kStepTo(KT.step+1)">Weiter</button></div></div><p class="m">Am PC: ↑ Gas, ↓ Bremse, ← → lenken. Auf dem iPad: links lenken, rechts Gas und Bremse.</p></div><div id="kgame" style="position:relative;margin-top:14px"><canvas id="kc" style="width:100%;height:min(76vh,720px);min-height:300px;border-radius:14px;touch-action:none;background:#222;display:block"></canvas><div id="kh" style="position:absolute;inset:0;pointer-events:none"></div><button class="btn g" id="kback" onclick="kBack()" style="position:absolute;right:10px;top:10px;display:none">Menü</button><div id="kctl"><div><button class="kp" data-k="l" style="width:84px;height:84px;background:#334155" aria-label="Links">◀</button><button class="kp" data-k="r" style="width:84px;height:84px;background:#334155" aria-label="Rechts">▶</button></div><div><button class="kp" data-k="b" style="width:84px;height:100px;background:#d62828">Bremse</button><button class="kp" data-k="g" style="width:96px;height:150px;background:#2f9e44">Gas</button></div></div></div>`},
+spiele:()=>`<h1>Spiele</h1><p class="m">Eine kleine Pause zwischendurch.</p><div class="tiles" style="margin-top:20px">${tl([['game','Tic Tac Toe','Gegen den Computer, zu zweit oder online','ttt'],['game','Kart-Rennen 3D','Gegen den Computer oder online mit Freunden','kart']])}</div>`,
 ttt:()=>{
  if(!TT)ttNew();
  const t=TT,cpu=t.mode=='cpu',nm={X:cpu?'Du':'Spieler X',O:cpu?'Computer':'Spieler O'};
