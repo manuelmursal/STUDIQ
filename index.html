@@ -173,6 +173,7 @@ html{scrollbar-gutter:stable}
 header{display:flex;justify-content:space-between;align-items:center;position:relative;min-height:66px;box-sizing:border-box}
 header .logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);line-height:1;white-space:nowrap}
 header .ib{width:38px;height:38px;padding:0;align-items:center;justify-content:center;box-sizing:border-box}
+.toast{z-index:60}
 </style></head>
 <body><div id="app"></div>
 <script>
@@ -205,8 +206,9 @@ const ROLEN={admin:'Admin',moderator:'Moderator',schueler:'Schüler',gesperrt:'G
 const TY={book:{n:'Schulbücher',s:'Alle Schulbücher online',one:'Neues Buch'},stoff:{n:'Stoff',s:'Zusammenfassungen und Material',one:'Neuer Stoff'},notes:{n:'Mitschriften',s:'Eigene Notizen und GoodNotes-PDFs',one:'Neue Mitschrift'},all:{n:'Suche'}};
 
 /* ===== Version und Neuerungen: bei jedem Update VERSION erhöhen und oben einen Eintrag in CHANGELOG ergänzen ===== */
-const VERSION='2026-11-19.7';
+const VERSION='2026-11-19.8';
 const CHANGELOG=[
+ {v:'2026-11-19.8',t:'Admin-Center: Details, Bücher-Zugriff und sicheres Löschen',items:['Im Admin-Center kommst du jetzt mit einem Klick auf jeden Namen zum Profil. Oben siehst du, wie viele Admins, Moderatoren und Schüler es gibt.','Der Admin kann jeder Person den Zugriff auf die Bücherbibliothek geben oder wegnehmen. Wer keinen Zugriff hat, kann den Admin mit einem Knopf anschreiben und bekommt einen Hinweis, sobald er freigeschaltet ist.','Accounts löschen geht jetzt nur noch nach einer Sicherheitsfrage und mit einem Lösch-Passwort.']},
  {v:'2026-11-19.7',t:'Kart-Rennen: Bestenliste und Vollbild',items:['Neu: Bestenliste. Deine schnellste Zeit pro Strecke wird gespeichert, du siehst die Zeiten aller Spieler.','Das Kart-Rennen läuft jetzt im Vollbild. Mit „Vollbild beenden“ oder Menü kommst du zurück.']},
  {v:'2026-11-19.6',t:'Kart-Rennen: Auswahl und neue Steuerung',items:['Neuer Startbildschirm KartFahrt0 mit Animation. Danach wählst du Auto, Charakter (Hautton und Farbe) und zuletzt die Strecke.','Die Autos haben unterschiedliche Werte für Tempo, Start und Lenkung.','Steuerung: Links lenken, rechts Gas und Bremse. Am PC mit den Pfeiltasten, Gas gibst du jetzt selbst.','Bei Spiele ist der Knopf „Mit Freunden“ weg. Den Modus stellst du direkt im Spiel ein.']},
  {v:'2026-11-19.5',t:'Kart-Rennen: größere Strecken und Bereit-Knopf',items:['Drei neue, deutlich größere Strecken mit Haarnadelkurven und Schlangenlinien.','Die Eisabfahrt ist rutschig: Dein Kart driftet in den Kurven, das ist schwerer.','Auf allen Strecken liegen Ölflecken. Wer hineinfährt, dreht sich und wird langsamer.','Vor dem Start muss jeder auf „Bereit“ tippen. Sind alle bereit, zählt der Countdown von 3 herunter.']},
@@ -233,11 +235,13 @@ function showSplash(force){
 /* ===== Zustand ===== */
 let DB=[],ME=null,ready=false,PROF=[],FRS=[],SCH=[],PL={plan:{},pc:{}},A={q:'',fr:0},am='in',MSG=[],MSGu=null,lastN=-1,chT=0;
 let cur,pi=0,V='home',P={},H=[],st='Konto';
+let REQS=null,BREQ;
 let UNR={},NMSG=[],nT=0,knownM=null,knownR=null,AG=[],knownG=null,pSig='';
 let DK=null,DKc={},DKr={},DQ='',REV=false,GR=null,GM='note',L=null,SOC={},IMGU={},TT=null,GAMES=null;
 const F={};['book','stoff','notes','all'].forEach(t=>F[t]={q:''});
 
 /* ===== Rechte ===== */
+const hasBooks=()=>!!ME&&(ME.role=='admin'||ME.role=='moderator'||ME.books_access!==false);
 const can=t=>ME&&(t=='book'?['admin','moderator'].includes(ME.role):['admin','moderator','schueler'].includes(ME.role));
 const canEdit=x=>ME&&(ME.role=='admin'||(x.by==ME.id&&x.type!='book')||(x.type=='book'&&ME.role=='moderator'));
 
@@ -249,7 +253,7 @@ async function loadItems(){
  if(error){toast('Die Inhalte konnten nicht geladen werden.');return}
  const paths=data.filter(x=>x.cover_path).map(x=>x.cover_path),urls={};
  if(paths.length){const r=await sb.storage.from('uploads').createSignedUrls(paths,3600);(r.data||[]).forEach(o=>{if(o.signedUrl)urls[o.path]=o.signedUrl})}
- DB=data.map(x=>({id:x.id,type:x.type,title:x.title,fach:x.fach,stufe:x.stufe,land:x.land,color:x.color||COL[0],desc:x.descr||'',school:x.school||'',cover_path:x.cover_path,cover:urls[x.cover_path]||null,by:x.created_by,n:x.pages?.[0]?.count||0,pages:null,saved:true,at:x.created_at}));
+ DB=data.map(x=>({id:x.id,type:x.type,title:x.title,fach:x.fach,stufe:x.stufe,land:x.land,color:x.color||COL[0],desc:x.descr||'',school:x.school||'',cover_path:x.cover_path,cover:urls[x.cover_path]||null,by:x.created_by,n:x.pages?.[0]?.count||0,pages:null,saved:true,at:x.created_at})).filter(x=>x.type!='book'||hasBooks());
 }
 async function loadPages(x){
  const{data}=await sb.from('pages').select('id,idx,path').order('idx').eq('item_id',x.id),ps=data||[],m={};
@@ -258,7 +262,9 @@ async function loadPages(x){
 }
 const PCOLS='id,username,display_name,code,role,klasse,stufe,school_id,visible,accept_requests,avatar_idx,avatar_path,banner_path';
 async function loadProfiles(){
- const{data}=await sb.from('profiles').select(PCOLS).order('username');PROF=data||[];
+ let{data,error}=await sb.from('profiles').select(PCOLS+',books_access').order('username');
+ if(error){const r=await sb.from('profiles').select(PCOLS).order('username');data=r.data}
+ PROF=data||[];
  const paths=[...new Set(PROF.flatMap(p=>[p.avatar_path,p.banner_path]).filter(x=>x&&!String(x).startsWith('preset:')))],m={};
  if(paths.length){const r=await sb.storage.from('uploads').createSignedUrls(paths,86400);(r.data||[]).forEach(o=>{if(o.signedUrl)m[o.path]=o.signedUrl})}
  PROF.forEach(p=>{p.avu=m[p.avatar_path]||null;p.bnu=m[p.banner_path]||null});
@@ -296,7 +302,7 @@ async function doAuth(){
  if(r.error){const m=r.error.message||'';console.error('Auth-Fehler',r.error);return toast(/registered|already|duplicate/i.test(m)?'Den Namen gibt es schon.':/Invalid login/i.test(m)?'Name oder Passwort falsch.':'Fehler: '+m)}
  H=[];V='home';P={};ready=false;render();await boot();
 }
-async function out(){clearInterval(nT);document.title='STUDIQ';await sb.auth.signOut();ME=null;DB=[];PROF=[];FRS=[];PL={plan:{},pc:{}};DK=null;DKc={};DKr={};GR=null;L=null;SOC={};IMGU={};TT=null;GAMES=null;GRP=null;GMB=[];GMS=[];FW={};AG=[];H=[];V='home';P={};render()}
+async function out(){clearInterval(nT);document.title='STUDIQ';await sb.auth.signOut();ME=null;DB=[];PROF=[];FRS=[];PL={plan:{},pc:{}};DK=null;DKc={};DKr={};GR=null;L=null;SOC={};IMGU={};TT=null;GAMES=null;GRP=null;GMB=[];GMS=[];FW={};AG=[];REQS=null;BREQ=undefined;H=[];V='home';P={};render()}
 async function chName(){
  const v=$('#nu').value.trim();if(v==ME.username)return;
  if(!/^[A-Za-z0-9._-]{3,20}$/.test(v))return toast('Name: 3 bis 20 Zeichen, nur Buchstaben, Zahlen, Punkt, Minus, Unterstrich.');
@@ -328,6 +334,8 @@ function render(){
  if((v=='deck'||v=='learn')&&!DKc[P.d])return ld(loadCards(P.d));
  if(v=='noten'&&GR===null)return ld(loadGrades());
  if(v=='dash'&&DK===null)return ld(loadDecks());
+ if(v=='admin'&&REQS===null)return ld(loadReqs());
+ if(v=='sec'&&P.t=='book'&&!hasBooks()&&BREQ===undefined)return ld(loadMyReq());
  if((v=='tttf'||v=='tttg')&&GAMES===null)return ld(loadGames());
  if(v=='tttg'&&!GAMES.find(g=>g.id==P.g)){V=v='tttf';P={}}
  if(v=='fwd'&&!DB.find(x=>x.id==P.id)){V=v='home';P={}}
@@ -436,7 +444,7 @@ const nsBase=()=>{const all=S.ns=S.ns||{};if(!all[ME.id]){all[ME.id]={_b:new Dat
 const seenAt=id=>{const n=nsBase();return n[id]||n._b};
 function markRead(id,ts){const n=nsBase();n[id]=ts||new Date().toISOString();sv('ns',S.ns);calcUnr();updBadge()}
 function calcUnr(){UNR={};for(const m of NMSG){if(Date.parse(m.created_at)>Date.parse(seenAt(m.sender)))UNR[m.sender]=(UNR[m.sender]||0)+1}}
-const notifCount=()=>Object.values(UNR).reduce((a,b)=>a+b,0)+(ME?frs().inc.length:0)+AG.length;
+const notifCount=()=>Object.values(UNR).reduce((a,b)=>a+b,0)+(ME?frs().inc.length:0)+AG.length+(ME&&ME.role=='admin'&&REQS?REQS.length:0);
 function updBadge(){const n=ME?notifCount():0,b=$('#bdg');if(b)b.textContent=n>99?'99+':n||'';document.title=(n?`(${n}) `:'')+'STUDIQ'}
 function alertN(t,b,from){if(document.hidden){if('Notification' in window&&Notification.permission=='granted')try{new Notification(t,{body:String(b||'').slice(0,120)})}catch(e){}return}if(!(V=='chat'&&P.u==from))toast(t)}
 async function pollNotif(){
@@ -458,8 +466,10 @@ async function pollNotif(){
  AG=(gm&&!gm.error?gm.data||[]:[]).filter(r=>r.turn==(r.x==ME.id?'X':'O'));
  const gi=new Set(AG.map(r=>r.id));
  if(knownG)AG.filter(r=>!knownG.has(r.id)&&!(V=='tttg'&&P.g==r.id)).forEach(r=>alertN('Tic Tac Toe: Du bist dran gegen '+nm(r.x==ME.id?r.o:r.x)+'.',''));
- knownG=gi;updBadge();
- const sig=[...mids].join()+'|'+[...rids].join()+'|'+[...gi].join(),chg=sig!=pSig;pSig=sig;
+ knownG=gi;
+ if(ME.role=='admin'){const pr=REQS?REQS.length:null;await loadReqs();if(pr!==null&&REQS.length>pr)alertN('Neue Anfrage für die Bücherbibliothek.','')}
+ updBadge();
+ const sig=[...mids].join()+'|'+[...rids].join()+'|'+[...gi].join()+'|'+(REQS?REQS.length:0),chg=sig!=pSig;pSig=sig;
  if(V=='notif'||(V=='chat'&&!P.u)||(V=='dash'&&chg))render();
 }
 function startNotif(){clearInterval(nT);knownM=null;knownR=null;knownG=null;AG=[];pSig='';NMSG=[];UNR={};if(!ME){updBadge();return}roleStart();pollNotif();nT=setInterval(pollNotif,12000)}
@@ -476,7 +486,18 @@ async function roleChanged(r){
  if(old=='gesperrt'&&r!='gesperrt'){await Promise.all([loadItems(),loadProfiles()]);DK=null;GR=null;GAMES=null}
  render()
 }
-async function pollRole(){const{data}=await sb.from('profiles').select('role').eq('id',ME.id).maybeSingle();if(data&&data.role&&data.role!=ME.role)await roleChanged(data.role)}
+async function pollRole(){
+ let r=await sb.from('profiles').select('role,books_access').eq('id',ME.id).maybeSingle();
+ if(r.error)r=await sb.from('profiles').select('role').eq('id',ME.id).maybeSingle();
+ const d=r.data;if(!d)return;
+ if(d.role&&d.role!=ME.role)await roleChanged(d.role);
+ if(d.books_access!==undefined&&d.books_access!==ME.books_access){
+  const was=hasBooks();setMine({books_access:d.books_access});BREQ=undefined;
+  await loadItems();
+  if(hasBooks()!=was){const t=hasBooks()?'Du hast jetzt Zugriff auf die Schulbücher.':'Dein Zugriff auf die Schulbücher wurde beendet.';if(document.hidden){if('Notification' in window&&Notification.permission=='granted')try{new Notification('STUDIQ: '+t)}catch(e){}}else toast(t)}
+  render()
+ }
+}
 function roleStart(){const rk=S.rk=S.rk||{},k=rk[ME.id];if(k&&k!=ME.role){logRole(ME.role);roleAlert(ME.role)}else if(!k){rk[ME.id]=ME.role;sv('rk',rk)}}
 const ago=t=>{const s=(Date.now()-t)/1000;return s<60?'gerade eben':s<3600?'vor '+Math.floor(s/60)+' Min.':s<86400?'vor '+Math.floor(s/3600)+' Std.':new Date(t).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'})};
 function feed(){
@@ -487,9 +508,26 @@ function feed(){
  AG.forEach(g=>{const o=g.x==ME.id?g.o:g.x;e.push({t:Date.parse(g.updated_at),h:`Tic Tac Toe: Du bist dran gegen <b>${esc(nm(o))}</b>`,go:`go('tttg',{g:'${g.id}'})`})});
  DB.filter(x=>x.by!=ME.id&&x.at&&now-Date.parse(x.at)<W&&(!ME.stufe||x.stufe==ME.stufe)).slice(0,5).forEach(x=>e.push({t:Date.parse(x.at),h:`Neu bei ${TY[x.type].n}: <b>${esc(x.title)}</b> <span class="m">(${esc(x.fach)}, Klasse ${x.stufe})</span>`,go:`go('view',{id:'${x.id}'})`}));
  (DK||[]).filter(d=>d.owner!=ME.id&&d.created_at&&now-Date.parse(d.created_at)<W).slice(0,3).forEach(d=>e.push({t:Date.parse(d.created_at),h:`Neuer Vokabel-Stapel: <b>${esc(d.title)}</b> <span class="m">von ${esc(nm(d.owner))}</span>`,go:`go('deck',{d:'${d.id}'})`}));
+ if(ME.role=='admin'&&REQS&&REQS.length)e.push({t:Date.parse(REQS[REQS.length-1].created_at),h:`<b>${REQS.length}</b> Zugriffsanfrage${REQS.length>1?'n':''} für die Bücherbibliothek`,go:"go('admin')"});
  const c=CHANGELOG[0];e.push({t:Date.parse(c.v.slice(0,10)),h:`Update: <b>${esc(c.t)}</b>`,go:'showSplash(1)'});
  return e.sort((a,b)=>b.t-a.t).slice(0,8)
 }
+const bkLock=()=>`<h1>Schulbücher</h1><div class="card" style="max-width:520px;text-align:center;margin:20px auto"><div style="opacity:.6">${ic('book')}</div><h2 style="margin:10px 0 6px">Leider kein Zugriff</h2><p class="m" style="margin:0 0 16px">Für die Bücherbibliothek brauchst du eine Freigabe. Schreib dem Admin, dann schaltet er dich frei.</p>${BREQ?'<p style="margin:0"><b>Deine Anfrage wurde gesendet.</b><br><span class="m">Du bekommst einen Hinweis, sobald du freigeschaltet bist.</span></p>':`<textarea id="bm" rows="2" maxlength="300" placeholder="Nachricht an den Admin (optional)"></textarea><p style="margin:14px 0 0"><button class="btn o" onclick="reqBooks()">Admin kontaktieren</button></p>`}</div>`;
+async function loadMyReq(){const{data}=await sb.from('book_requests').select('user_id').eq('user_id',ME.id).maybeSingle();BREQ=!!data}
+async function reqBooks(){
+ const{error}=await sb.rpc('request_books',{p_msg:($('#bm')?.value||'').trim()});
+ if(error){console.error(error);return toast(/function|schema cache|does not exist|Could not find/i.test(error.message||'')?'Das geht erst, wenn der Admin update10.sql in Supabase ausgeführt hat.':'Die Anfrage hat nicht geklappt.')}
+ BREQ=true;toast('Der Admin wurde benachrichtigt.');render()
+}
+async function loadReqs(){const{data,error}=await sb.from('book_requests').select('*').order('created_at');REQS=error?[]:data||[]}
+async function setBooks(id,ok){
+ const{error}=await sb.from('profiles').update({books_access:ok}).eq('id',id);
+ if(error){console.error(error);toast(/books_access/.test(error.message||'')||needSql(error)?'Bitte führe zuerst update10.sql in Supabase aus.':'Das hat nicht geklappt.');await loadProfiles();return render()}
+ const p=PROF.find(x=>x.id==id);if(p)p.books_access=ok;
+ if(ok){await sb.from('book_requests').delete().eq('user_id',id);REQS=(REQS||[]).filter(r=>r.user_id!=id)}
+ toast(nm(id)+(ok?' hat jetzt Zugriff auf die Bücher.':' hat keinen Zugriff mehr auf die Bücher.'));render()
+}
+async function dismissReq(id){await sb.from('book_requests').delete().eq('user_id',id);REQS=(REQS||[]).filter(r=>r.user_id!=id);render()}
 const askNotif=()=>{if(!('Notification' in window))return;Notification.requestPermission().then(()=>render())};
 const tl=a=>a.map(t=>`<div class="tile" onclick="nav('${t[3]}')">${ic(t[0])}<b>${t[1]}</b><span>${t[2]}</span></div>`).join('');
 const nav=k=>k[0]=='_'?go('sec',{t:k.slice(1)}):go(k);
@@ -516,19 +554,35 @@ async function facc(id){await sb.from('friendships').update({status:'accepted'})
 const fadd=()=>{const raw=$('#fn').value.trim();if(!raw)return;const d=raw.replace(/\s/g,''),p=/^\d{6}$/.test(d)?PROF.find(x=>x.code==d):PROF.find(x=>x.username.toLowerCase()==raw.toLowerCase());if(!p)toast('Niemand mit diesem Namen oder Code gefunden.');else if(p.id==ME.id)toast('Das bist du selbst.');else rq(p.id)};
 
 /* ===== Admin ===== */
-const arows=()=>{const f=frs().friends,q=A.q.toLowerCase(),l=PROF.filter(p=>(!A.fr||f.includes(p.id))&&p.username.toLowerCase().includes(q));
- return l.length?l.map(p=>`<div class="row"><span>${pn(p)}${p.id==ME.id?' <span class="m">(du)</span>':''}${f.includes(p.id)?' <span class="m">, Freund</span>':''}</span><div style="display:flex;gap:8px;align-items:center"><select style="max-width:170px" ${p.id==ME.id?'disabled':''} onchange="setRole('${p.id}',this.value)">${Object.entries(ROLEN).map(([k,v])=>`<option value="${k}" ${p.role==k?'selected':''}>${v}</option>`).join('')}</select>${p.id==ME.id?'':`<button class="btn g" onclick="delUser('${p.id}')">Löschen</button>`}</div></div>`).join(''):'<p class="m">Niemand gefunden.</p>'};
+const arows=()=>{const f=frs().friends,q=A.q.toLowerCase(),l=PROF.filter(p=>(!A.fr||f.includes(p.id))&&p.username.toLowerCase().includes(q)),col=PROF.some(p=>p.books_access!==undefined);
+ return l.length?l.map(p=>{const al=p.role=='admin'||p.role=='moderator';return `<div class="row"><span><b style="font-weight:500;cursor:pointer" onclick="go('person',{u:'${p.id}'})">${pn(p)}</b>${p.id==ME.id?' <span class="m">(du)</span>':''}${f.includes(p.id)?' <span class="m">, Freund</span>':''}</span><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">${col?`<label class="m" style="display:flex;gap:6px;align-items:center;font-size:13px;cursor:pointer" title="${al?'Admins und Moderatoren haben immer Zugriff':'Zugriff auf die Bücherbibliothek'}"><input type="checkbox" ${al||p.books_access!==false?'checked':''} ${al?'disabled':''} onchange="setBooks('${p.id}',this.checked)">Bücher</label>`:''}<select style="max-width:170px" ${p.id==ME.id?'disabled':''} onchange="setRole('${p.id}',this.value)">${Object.entries(ROLEN).map(([k,v])=>`<option value="${k}" ${p.role==k?'selected':''}>${v}</option>`).join('')}</select>${p.id==ME.id?'':`<button class="btn g" onclick="delUser('${p.id}')">Löschen</button>`}</div></div>`}).join(''):'<p class="m">Niemand gefunden.</p>'};
+const astats=()=>{const n=r=>PROF.filter(p=>p.role==r).length,it=t=>DB.filter(x=>x.type==t).length,col=PROF.some(p=>p.books_access!==undefined),wb=PROF.filter(p=>p.role=='admin'||p.role=='moderator'||p.books_access!==false).length;
+ return `<div class="stat"><div><b>${PROF.length}</b><span>Personen</span></div><div><b>${n('admin')}</b><span>Admins</span></div><div><b>${n('moderator')}</b><span>Moderatoren</span></div><div><b>${n('schueler')}</b><span>Schüler</span></div><div><b>${n('gesperrt')}</b><span>Gar nichts sehen</span></div>${col?`<div><b>${wb}</b><span>mit Bücher-Zugriff</span></div>`:''}</div><div class="stat"><div><b>${it('book')}</b><span>Schulbücher</span></div><div><b>${it('stoff')}</b><span>Stoff-Ordner</span></div><div><b>${it('notes')}</b><span>Mitschriften</span></div></div>`};
+const areqs=()=>REQS&&REQS.length?`<h2>Anfragen für die Bücherbibliothek</h2><div class="card" style="padding:6px 24px;max-width:none">${REQS.map(r=>`<div class="row" style="align-items:flex-start"><span><b style="font-weight:500;cursor:pointer" onclick="go('person',{u:'${r.user_id}'})">${esc(nm(r.user_id))}</b> <span class="m" style="font-size:13px">${fdt(r.created_at)}</span>${r.msg?`<br>${esc(r.msg)}`:''}</span><span style="display:flex;gap:8px"><button class="btn o" onclick="setBooks('${r.user_id}',true)">Freigeben</button><button class="btn g" onclick="dismissReq('${r.user_id}')">Ablehnen</button></span></div>`).join('')}</div>`:'';
 async function setRole(id,role){const{error}=await sb.from('profiles').update({role}).eq('id',id);if(error){toast('Die Rolle konnte nicht geändert werden.');await loadProfiles();return render()}const p=PROF.find(x=>x.id==id);if(p)p.role=role;toast(nm(id)+' ist jetzt: '+ROLEN[role])}
 
-async function delUser(id){
- const p=PROF.find(x=>x.id==id);if(!p)return;
- if(!confirm('Account „'+p.username+'“ wirklich löschen? Das löscht auch Profil, Stundenplan, Noten, Nachrichten, Freundschaften und seine Stoff-Ordner. Das geht nicht rückgängig.'))return;
- const{data,error}=await sb.rpc('admin_delete_user',{uid:id});
- if(error){console.error(error);return toast(/function|schema cache|does not exist|Could not find/i.test(error.message||'')?'Bitte führe zuerst update3.sql in Supabase aus.':'Löschen hat nicht geklappt: '+error.message)}
- const f=Array.isArray(data)?data:[];
- for(let i=0;i<f.length;i+=100)await sb.storage.from('uploads').remove(f.slice(i,i+100));
- toast('Account „'+p.username+'“ gelöscht.');
- await Promise.all([loadProfiles(),loadFr(),loadItems()]);render()
+function delUser(id){
+ const p=PROF.find(x=>x.id==id);if(!p||id==ME.id)return;
+ document.querySelector('.splash')?.remove();
+ const d=document.createElement('div');d.className='splash';d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');d.setAttribute('aria-label','Account löschen');
+ const close=()=>d.remove(),bt='display:flex;gap:10px;justify-content:flex-end;margin:20px 0 0';
+ const s1=()=>{d.innerHTML=`<div class="card" style="max-width:480px;margin:auto"><h1 style="margin-top:0">Account löschen?</h1><p>Bist du sicher, dass du <b>${esc(p.username)}</b> löschen willst?</p><p class="m">Das löscht auch Profil, Stundenplan, Noten, Nachrichten, Freundschaften, Vokabel-Stapel, Stoff und Mitschriften dieser Person. Schulbücher bleiben. Das geht nicht rückgängig.</p><p style="${bt}"><button class="btn g" id="xdc">Abbrechen</button><button class="btn o" id="xd1">Ja, weiter</button></p></div>`;$('#xdc').onclick=close;$('#xd1').onclick=s2};
+ const s2=()=>{d.innerHTML=`<div class="card" style="max-width:480px;margin:auto"><h1 style="margin-top:0">Passwort eingeben</h1><p class="m">Gib das Lösch-Passwort ein, um <b>${esc(p.username)}</b> endgültig zu löschen.</p><input id="xdp" type="password" autocomplete="off" aria-label="Lösch-Passwort" placeholder="Lösch-Passwort" style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)"><p style="${bt}"><button class="btn g" id="xdc">Abbrechen</button><button class="btn o" id="xdg">Endgültig löschen</button></p></div>`;$('#xdc').onclick=close;$('#xdg').onclick=go2;$('#xdp').onkeydown=e=>{if(e.key=='Enter')go2()};$('#xdp').focus()};
+ let busy=false;
+ const go2=async()=>{
+  if(busy)return;const pw=$('#xdp').value;if(!pw)return toast('Bitte gib das Passwort ein.');
+  busy=true;$('#xdg').disabled=true;
+  const{data,error}=await sb.rpc('admin_delete_user_pw',{uid:id,pw});
+  busy=false;const g=$('#xdg');if(g)g.disabled=false;
+  if(error){console.error(error);return toast(/function|schema cache|does not exist|Could not find/i.test(error.message||'')?'Bitte führe zuerst update10.sql in Supabase aus.':'Löschen hat nicht geklappt: '+error.message)}
+  if(!data||!data.ok){toast({pw:'Das Passwort ist falsch.',locked:'Zu viele Versuche. Bitte warte 10 Minuten.',unset:'Das Lösch-Passwort ist noch nicht gesetzt. Siehe update10.sql.'}[data&&data.err]||'Löschen hat nicht geklappt.');const x=$('#xdp');if(x&&data&&data.err=='pw'){x.value='';x.focus()}return}
+  close();
+  const f=Array.isArray(data.paths)?data.paths:[];
+  for(let i=0;i<f.length;i+=100)await sb.storage.from('uploads').remove(f.slice(i,i+100));
+  toast('Account „'+p.username+'“ gelöscht.');
+  await Promise.all([loadProfiles(),loadFr(),loadItems()]);render()
+ };
+ document.body.append(d);d.onclick=e=>{if(e.target==d)close()};s1()
 }
 
 /* ===== Profil ===== */
@@ -1201,7 +1255,7 @@ const VW={
 auth:()=>`<h1 style="text-align:center;margin-top:30px">Willkommen bei STUDIQ</h1><div class="tabs">${[['in','Anmelden'],['up','Registrieren']].map(t=>`<button class="tab ${am==t[0]?'on':''}" onclick="am='${t[0]}';render()">${t[1]}</button>`).join('')}</div><div class="card" style="margin-top:16px"><label style="margin-top:0">Name</label><input id="an" autocomplete="username" autocapitalize="none" onkeydown="event.key=='Enter'&&doAuth()"><label>Passwort</label><input id="ap" type="password" autocomplete="${am=='up'?'new-password':'current-password'}" onkeydown="event.key=='Enter'&&doAuth()">${am=='up'?`<label>Passwort wiederholen</label><input id="ap2" type="password" autocomplete="new-password" onkeydown="event.key=='Enter'&&doAuth()">`:''}<p style="margin:22px 0 0"><button class="btn o" onclick="doAuth()">${am=='in'?'Anmelden':'Konto erstellen'}</button></p></div>`,
 blocked:()=>`<div class="card" style="text-align:center;padding:44px 24px;margin-top:40px"><h1>Kein Zugriff</h1><p class="m">Dein Zugang ist gerade nicht freigeschaltet.</p><p style="margin:24px 0 0"><button class="btn g" onclick="out()">Abmelden</button></p></div>`,
 home:()=>`<h1 style="text-align:center;font-size:32px;margin:30px 0 18px">Was möchtest du heute tun?</h1><input style="max-width:520px;display:block;margin:0 auto;border-radius:99px" placeholder="Suchen, zum Beispiel Deutsch" aria-label="Suche" onkeydown="event.key=='Enter'&&gs(this.value)"><div class="tiles">${tl([['dash','Dashboard','Das ist neu, dazu deine Noten','dash'],['book','Schulbücher','Alle Bücher online','_book'],['stoff','Lernmaterial','Stoff und Mitschriften','lern'],['school','Meine Schule','Chat und Mitschüler','schule'],['plan','Stundenplan','Deine Stunden eintragen','plan'],['game','Spiele','Tic Tac Toe und mehr','spiele'],['user','Mein Profil','Klasse, Schule, Uploads','profil'],...(ME.role=='admin'?[['shield','Admin','Nutzer und Rollen','admin']]:[])])}</div>`,
-admin:()=>`<h1>Admin</h1><p class="m">Lege hier fest, was jede Person sehen und tun darf. Moderatoren dürfen Schulbücher hochladen.</p><div class="bar"><input placeholder="Name suchen" aria-label="Name suchen" value="${esc(A.q)}" oninput="A.q=this.value;$('#al').innerHTML=arows()"><span class="chip ${A.fr?'on':''}" onclick="A.fr=!A.fr;render()">Nur Freunde</span></div><div class="card" id="al" style="padding:6px 24px;max-width:none">${arows()}</div>`,
+admin:()=>`<h1>Admin</h1><p class="m">Lege hier fest, was jede Person sehen und tun darf. Moderatoren dürfen Schulbücher hochladen. Tippe auf einen Namen, um das Profil zu öffnen.</p>${astats()}${areqs()}<h2>Personen</h2><div class="bar"><input placeholder="Name suchen" aria-label="Name suchen" value="${esc(A.q)}" oninput="A.q=this.value;$('#al').innerHTML=arows()"><span class="chip ${A.fr?'on':''}" onclick="A.fr=!A.fr;render()">Nur Freunde</span></div><div class="card" id="al" style="padding:6px 24px;max-width:none">${arows()}</div>`,
 dash:()=>{const nn=DB.filter(x=>!ME.stufe||x.stufe==ME.stufe).slice(0,4),ev=feed();return `<h1>Hallo, ${esc(dn(ME))}</h1><p class="m">Das ist neu.</p><div class="card" style="padding:6px 24px;max-width:none;margin-top:12px">${ev.length?ev.map(e=>`<div class="row" ${e.go?`style="cursor:pointer" onclick="${e.go}"`:''}><span>${e.h}<br><span class="m" style="font-size:13px">${ago(e.t)}</span></span>${e.go?'<span class="m">›</span>':''}</div>`).join(''):'<p class="m">Gerade ist nichts Neues da.</p>'}</div><div class="tiles" style="margin:18px 0 0;max-width:none">${tl([['grade','Noten','Noten und MSS-Punkte mit Statistik','noten']])}</div><h2>Neu für dich</h2><div class="grid">${nn.map(card).join('')||'<p class="m">Noch nichts da.</p>'}</div>`},
 lern:()=>`<h1>Lernmaterial</h1><p class="m">Was suchst du?</p><div class="tiles" style="margin-top:20px">${tl([['stoff','Stoff','Zusammenfassungen und Material','_stoff'],['notes','Mitschriften','Notizen und GoodNotes-PDFs','_notes'],['cards','Vokabeln','Karteikarten üben und erstellen','vokab']])}</div>`,
 schule:()=>{const s=SCH.find(x=>x.id==ME.school_id);return `<h1>${esc(s?s.name:'Meine Schule')}</h1><p class="m">Hier findest du Schulen, Chat und Mitschüler.</p>${s?`<button class="btn g" onclick="go('schulv',{s:'${s.id}'})">Schüler an ${esc(s.name)}</button>`:`<button class="btn g" onclick="go('schulen')">Schule auswählen</button>`}<div class="tiles" style="margin-top:20px">${tl([['school','Schulen','Alle Schulen ansehen','schulen'],['chat','Chat','Nachrichten an Freunde','chat'],['chat','Gruppen','Öffentliche und private Gruppen','gruppen'],['user','Schülerliste','Öffentliche Profile','schueler'],['user','Freunde','Per Name oder Code','freunde']])}</div>`},
@@ -1213,6 +1267,7 @@ plan:()=>{const t=(new Date().getDay()+6)%7,pl=PL.plan;return `<h1>Stundenplan</
 profil:()=>{const m=DB.filter(x=>x.by==ME.id);return phead(ME)+`<p class="m" style="text-align:center;margin-top:6px">${info(ME,1)}</p>${cre(ME.id)}<p style="text-align:center">Dein Code: <b>${fmt(ME.code)}</b> <span class="m">(zum Hinzufügen als Freund)</span></p><div class="card" style="padding:18px 24px"><p class="m" style="margin:0 0 12px">Profilbild</p><div class="chips" style="gap:12px;align-items:center">${AVATARS.map((a,i)=>`<img class="avc ${!ME.avu&&(ME.avatar_idx||0)==i?'on':''}" src="${a}" alt="Standardbild ${i+1}" onclick="pickAv(${i})">`).join('')}<label class="btn g" style="margin:0;font-size:15px">Eigenes Bild<input type="file" accept="image/*" hidden onchange="imgUp(this,'avatar')"></label>${ME.avatar_path?`<button class="btn g" onclick="rmImg('avatar')">Entfernen</button>`:''}</div><p class="m" style="margin:20px 0 12px">Hintergrund</p><div class="chips" style="gap:12px;align-items:center">${BANNERS.map(([n,g],i)=>`<span class="bnc ${bsel(ME)==i?'on':''}" style="background:${g}" title="${n}" role="button" tabindex="0" aria-label="Hintergrund ${n}" onclick="pickBn(${i})"></span>`).join('')}<label class="btn g" style="margin:0;font-size:15px">Eigenes Bild<input type="file" accept="image/*" hidden onchange="imgUp(this,'banner')"></label>${ME.bnu?`<button class="btn g" onclick="rmImg('banner')">Entfernen</button>`:''}</div></div><div class="card" style="padding:6px 24px">${SP.PF()}</div><h2>Meine Uploads</h2><div class="grid">${m.map(card).join('')||'<p class="m">Noch nichts hochgeladen.</p>'}</div>`},
 person:()=>{const p=byId(P.u),me=p.id==ME.id,s=me?'':ql(p);return phead(p)+`<p class="m" style="text-align:center;margin-top:6px">${info(p,me)||'Noch keine Angaben.'}</p>${cre(p.id)}${me?`<p style="text-align:center"><button class="btn g" onclick="go('profil')">Mein Profil bearbeiten</button></p>`:`<p style="text-align:center">${s=='Befreundet'?`<button class="btn o" onclick="go('chat',{u:'${p.id}'})">Nachricht schreiben</button>`:s=='Anfrage offen'?`<button class="btn o" onclick="facc('${p.id}')">Anfrage annehmen</button>`:s=='Angefragt'?'<span class="m">Anfrage gesendet</span>':`<button class="btn o" onclick="rq('${p.id}')">Anfrage senden</button>`}</p>`}<p class="m" style="text-align:center">Code: ${fmt(p.code)}</p>`},
 sec:()=>{const t=P.t,f=F[t],T=TY[t];
+if(t=='book'&&!hasBooks())return bkLock();
 if(!f.go)return `<h1>${T.n}</h1><p class="m">${T.s}. Wähle zuerst deine Klasse.</p><div class="card"><label>Klasse</label><div class="chips">${STU.map(s=>`<span class="chip ${f.stufe==s?'on':''}" onclick="fp('stufe',${s})">${s}</span>`).join('')}</div><p style="margin:22px 0 0"><button class="btn o" onclick="fgo()">Ergebnisse anzeigen</button></p></div>`;
 return `<h1>${T.n}</h1><div class="bar">${t!='all'?`<span class="chip on" onclick="F['${t}'].go=0;render()">Klasse ${f.stufe}, ändern</span>`:''}<input placeholder="Suchen, zum Beispiel Deutsch" aria-label="Suche" value="${esc(f.q)}" oninput="F['${t}'].q=this.value;$('#gr').innerHTML=gr()">${t!='all'&&can(t)?`<button class="btn o" onclick="nw('${t}')">${T.one}</button>`:''}</div><div class="grid" id="gr">${gr()}</div>`},
 neu:()=>`<h1>${TY[cur.type].one}</h1><p class="m">Lege zuerst den Ordner an. Die Seiten lädst du im nächsten Schritt hoch.</p><div class="card"><label>Titel</label><input placeholder="Zum Beispiel Deutsch 7" oninput="u('title',this.value)" value="${esc(cur.title)}"><label>Fach</label>${sel('fach',FACH)}<label>Klasse</label>${sel('stufe',STU)}<p style="margin:22px 0 0"><button class="btn o" onclick="mkd()">Weiter</button></p></div>`,
@@ -1274,7 +1329,7 @@ tttg:()=>{
  const cells=b.map((v,i)=>`<button class="ttc ${v?'f '+v.toLowerCase():''} ${wl.includes(i)?'w':''}" aria-label="Feld ${i+1}, ${v||'leer'}" onclick="tMove(${i})" ${v||!mine?'disabled':''}>${v}</button>`).join('');
  return `<h1>Tic Tac Toe</h1><p class="m" style="margin-bottom:0">Du (${me}) gegen <b style="font-weight:500">${esc(nm(o))}</b> (${me=='X'?'O':'X'})</p><p role="status" style="font-size:18px;text-align:center;margin:18px 0 12px"><b>${msg}</b></p><div class="ttb">${cells}</div><p style="text-align:center;margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${g.result?`<button class="btn o" onclick="tNew('${o}')">Nochmal spielen</button>`:''}<button class="btn g" onclick="tDel('${g.id}')">${g.result?'Spiel löschen':'Aufgeben und löschen'}</button></p>`
 },
-notif:()=>{const f=frs(),ids=Object.keys(UNR),perm='Notification' in window?Notification.permission:'';return `<h1>Benachrichtigungen</h1>${f.inc.length?`<h2>Freundschaftsanfragen</h2><div class="card" style="padding:6px 24px;max-width:none">${f.inc.map(p=>`<div class="row"><span style="cursor:pointer" onclick="go('person',{u:'${p}'})">${pn(byId(p))}</span><button class="btn o" onclick="facc('${p}')">Annehmen</button></div>`).join('')}</div>`:''}${AG.length?`<h2>Spiele</h2><div class="card" style="padding:6px 24px;max-width:none">${AG.map(g=>`<div class="row"><span>Tic Tac Toe: Du bist dran gegen <b>${esc(nm(g.x==ME.id?g.o:g.x))}</b></span><button class="btn o" onclick="go('tttg',{g:'${g.id}'})">Öffnen</button></div>`).join('')}</div>`:''}${ids.length?`<h2>Neue Nachrichten</h2><div class="card" style="padding:6px 24px;max-width:none">${ids.map(id=>{const m=NMSG.find(x=>x.sender==id);return `<div class="row"><span>${pn(byId(id))}<span class="m">, ${UNR[id]} neu</span><br><span class="m">${esc(String(m?(m.body||'Bild'):'').slice(0,60))}</span></span><button class="btn o" onclick="go('chat',{u:'${id}'})">Öffnen</button></div>`}).join('')}</div>`:''}${f.inc.length||ids.length||AG.length?'':'<p class="m">Nichts Neues.</p>'}${perm?`<div class="card" style="max-width:none"><b>Hinweise im Browser</b><p class="m" style="margin:6px 0 12px">${perm=='granted'?'Sie sind eingeschaltet. Du bekommst einen Hinweis, wenn die Seite im Hintergrund offen ist und etwas Neues kommt.':perm=='denied'?'Dein Browser blockiert sie gerade. Erlaube Hinweise für diese Seite in den Browser-Einstellungen.':'Bekomme einen Hinweis, wenn die Seite im Hintergrund offen ist und etwas Neues kommt. Bei geschlossener Seite gibt es keine Hinweise.'}</p>${perm=='default'?'<button class="btn o" onclick="askNotif()">Hinweise einschalten</button>':''}</div>`:''}`},
+notif:()=>{const f=frs(),ids=Object.keys(UNR),perm='Notification' in window?Notification.permission:'';return `<h1>Benachrichtigungen</h1>${f.inc.length?`<h2>Freundschaftsanfragen</h2><div class="card" style="padding:6px 24px;max-width:none">${f.inc.map(p=>`<div class="row"><span style="cursor:pointer" onclick="go('person',{u:'${p}'})">${pn(byId(p))}</span><button class="btn o" onclick="facc('${p}')">Annehmen</button></div>`).join('')}</div>`:''}${ME.role=='admin'&&REQS&&REQS.length?`<h2>Admin</h2><div class="card" style="padding:6px 24px;max-width:none"><div class="row"><span><b>${REQS.length}</b> Zugriffsanfrage${REQS.length>1?'n':''} für die Bücherbibliothek</span><button class="btn o" onclick="go('admin')">Öffnen</button></div></div>`:''}${AG.length?`<h2>Spiele</h2><div class="card" style="padding:6px 24px;max-width:none">${AG.map(g=>`<div class="row"><span>Tic Tac Toe: Du bist dran gegen <b>${esc(nm(g.x==ME.id?g.o:g.x))}</b></span><button class="btn o" onclick="go('tttg',{g:'${g.id}'})">Öffnen</button></div>`).join('')}</div>`:''}${ids.length?`<h2>Neue Nachrichten</h2><div class="card" style="padding:6px 24px;max-width:none">${ids.map(id=>{const m=NMSG.find(x=>x.sender==id);return `<div class="row"><span>${pn(byId(id))}<span class="m">, ${UNR[id]} neu</span><br><span class="m">${esc(String(m?(m.body||'Bild'):'').slice(0,60))}</span></span><button class="btn o" onclick="go('chat',{u:'${id}'})">Öffnen</button></div>`}).join('')}</div>`:''}${f.inc.length||ids.length||AG.length||(ME.role=='admin'&&REQS&&REQS.length)?'':'<p class="m">Nichts Neues.</p>'}${perm?`<div class="card" style="max-width:none"><b>Hinweise im Browser</b><p class="m" style="margin:6px 0 12px">${perm=='granted'?'Sie sind eingeschaltet. Du bekommst einen Hinweis, wenn die Seite im Hintergrund offen ist und etwas Neues kommt.':perm=='denied'?'Dein Browser blockiert sie gerade. Erlaube Hinweise für diese Seite in den Browser-Einstellungen.':'Bekomme einen Hinweis, wenn die Seite im Hintergrund offen ist und etwas Neues kommt. Bei geschlossener Seite gibt es keine Hinweise.'}</p>${perm=='default'?'<button class="btn o" onclick="askNotif()">Hinweise einschalten</button>':''}</div>`:''}`},
 chat:()=>{const f=frs().friends;if(P.u&&f.includes(P.u)){const p=byId(P.u);return `<div class="bar" style="margin:8px 0"><h1 style="flex:1;margin:0">${esc(dn(p))}</h1><button class="btn g" onclick="go('person',{u:'${p.id}'})">Profil</button></div><div class="card" id="ms"></div><div class="bar"><input id="mi" placeholder="Nachricht schreiben" maxlength="2000" onkeydown="event.key=='Enter'&&snd()"><label class="btn g" style="margin:0;display:flex;align-items:center" title="Bild senden" aria-label="Bild senden">${ic('image')}<input type="file" accept="image/*" hidden onchange="sndImg(this)"></label><button class="btn o" onclick="snd()">Senden</button></div>`}return `<h1>Chat</h1><p class="m">Du kannst Freunden schreiben. Freunde fügst du über Name oder Code hinzu.</p><div class="card" style="padding:6px 24px;max-width:none">${f.length?f.map(id=>`<div class="row"><span>${pn(byId(id))}</span><button class="btn o" onclick="go('chat',{u:'${id}'})">Schreiben</button></div>`).join(''):'<p class="m">Noch keine Freunde.</p>'}</div><p><button class="btn g" onclick="go('freunde')">Freunde hinzufügen</button></p>`},
 set:()=>`<h1>Einstellungen</h1><div class="tabs">${['Konto','Darstellung','Privatsphäre'].map(t=>`<button class="tab ${t==st?'on':''}" onclick="st='${t}';render()">${t}</button>`).join('')}</div><div class="card" style="padding:6px 24px;margin-top:16px">${SP[st]()}</div>`};
 const SP={
