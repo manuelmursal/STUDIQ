@@ -283,7 +283,7 @@ header .ib{width:38px;height:38px;padding:0;align-items:center;justify-content:c
 .crw{display:none}.frm>.crw{display:block;position:absolute;left:50%;top:-31px;transform:translateX(-50%);z-index:3;filter:drop-shadow(0 2px 5px #0006);animation:crf 3s ease-in-out infinite;pointer-events:none}
 .frm>.crw.s{top:-14px}
 @keyframes crf{50%{transform:translateX(-50%) translateY(-3px)}}
-.bdg{display:inline-block;position:static;flex:none;vertical-align:-3px;margin-left:6px}
+.vb{display:inline-block;flex:none;vertical-align:-3px;margin-left:6px;background:none}
 .od{position:absolute;right:9px;top:9px;width:15px;height:15px;border-radius:50%;background:#9a9a94;border:2.5px solid var(--bg);z-index:3;pointer-events:none;transition:background .3s}
 .od.s{width:12px;height:12px;border-width:2px;right:2px;top:2px}
 .od.on{background:#f26b1d;animation:odp 2s ease-in-out infinite}
@@ -1254,9 +1254,9 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&CK&&V=='cl
 /* ===== Bookie Slots, Themes, Bio ===== */
 const CRN=(w,h)=>`<svg viewBox="0 0 24 16" width="${w}" height="${h}" aria-label="Admin"><path d="M2 14 1 4l6 5 5-7 5 7 6-5-1 10z" fill="#f5c542" stroke="#b8860b" stroke-width="1.2" stroke-linejoin="round"/><rect x="2" y="14" width="20" height="2.2" rx="1" fill="#d9a21b"/><circle cx="12" cy="2" r="1.3" fill="#fff3b0"/></svg>`;
 const CRA=`<span class="crw">${CRN(44,30)}</span>`,CRS=`<span class="crw s">${CRN(22,15)}</span>`;
-const VER=`<svg class="bdg" viewBox="0 0 24 24" width="18" height="18" role="img" aria-label="Moderator"><title>Moderator</title><path d="M12 1.5l2.6 1.9 3.2-.1 1 3.1 2.6 1.9-1 3.1 1 3.1-2.6 1.9-1 3.1-3.2-.1L12 22.5l-2.6-1.9-3.2.1-1-3.1-2.6-1.9 1-3.1-1-3.1 2.6-1.9 1-3.1 3.2.1z" fill="#1d9bf0"/><path d="M7.8 12.2l3 3 5.4-6" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const VER=`<svg class="vb" viewBox="0 0 24 24" width="18" height="18" role="img" aria-label="Moderator"><title>Moderator</title><path d="M12 1.5l2.6 1.9 3.2-.1 1 3.1 2.6 1.9-1 3.1 1 3.1-2.6 1.9-1 3.1-3.2-.1L12 22.5l-2.6-1.9-3.2.1-1-3.1-2.6-1.9 1-3.1-1-3.1 2.6-1.9 1-3.1 3.2.1z" fill="#1d9bf0"/><path d="M7.8 12.2l3 3 5.4-6" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const isCre=p=>String(p.username||'').toLowerCase()=='manukanu';
-const bdg=p=>p.role=='moderator'?VER:isCre(p)?`<span class="bdg" title="Ersteller">${CRN(20,14)}</span>`:'';
+const bdg=p=>p.role=='moderator'?VER:isCre(p)?`<span class="vb" title="Ersteller">${CRN(20,14)}</span>`:'';
 let PRC=null,ONL=new Set();
 const onl=(p,sm)=>`<i class="od${sm?' s':''}${ONL.has(p.id)?' on':''}" data-pu="${p.id}" title="${ONL.has(p.id)?'Online':'Offline'}"></i>`;
 function presInit(){
