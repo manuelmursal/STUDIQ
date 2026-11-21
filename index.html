@@ -5,7 +5,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/studiq/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/studiq/favicon.png">
 <link rel="apple-touch-icon" href="/studiq/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500&family=Bungee&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -178,7 +178,7 @@ img.av{width:96px;height:96px;object-fit:cover;display:block;border:2px solid va
 @media(pointer:coarse){.rdar{display:none}}
 #rd.zm .rdb{opacity:0}
 .khb{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.5);color:#fff;padding:8px 12px;border-radius:10px;font-weight:600;line-height:1.5}
-.khc{position:absolute;inset:0;display:grid;place-items:center;font-size:96px;font-weight:700;color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.6)}
+
 .khp{position:absolute;left:50%;top:12%;transform:translateX(-50%);background:rgba(0,0,0,.65);color:#fff;padding:14px 22px;border-radius:12px;text-align:center;min-width:240px}.khp b{font-size:22px;display:block;margin-bottom:6px}
 #ki{position:fixed;inset:0;z-index:25;background:#101828 repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 3px,transparent 3px 60px);display:grid;place-content:center;transition:transform .9s cubic-bezier(.7,0,.3,1);box-shadow:0 24px 60px rgba(0,0,0,.5);cursor:pointer}
 #ki.go{transform:translateY(105%)}
@@ -288,6 +288,26 @@ header .ib{width:38px;height:38px;padding:0;align-items:center;justify-content:c
 .od.s{width:12px;height:12px;border-width:2px;right:2px;top:2px}
 .od.on{background:#f26b1d;animation:odp 2s ease-in-out infinite}
 @keyframes odp{50%{box-shadow:0 0 0 4px #f26b1d33}}
+.tlg h3{margin:22px 0 8px;font:600 15px Fraunces,Georgia,serif;color:var(--m)}
+.tli{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.tli:hover{transform:translateY(-2px);box-shadow:0 6px 18px #0001}
+.tld{flex:none;width:54px;text-align:center;line-height:1.1;border-right:2px solid var(--line);padding-right:12px}
+.tld b{display:block;font:600 24px Fraunces,Georgia,serif}.tld span{font-size:12px;text-transform:uppercase;color:var(--m)}
+.tlc{flex:1;min-width:0}.tlt{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tlm{font-size:13px;color:var(--m);margin-top:3px}
+.tlk{font-style:normal;color:#fff;border-radius:99px;padding:2px 9px;font-size:12px;margin-right:4px}
+.tli img{width:48px;height:48px;object-fit:cover;border-radius:10px;flex:none}
+.khc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;pointer-events:none;background:radial-gradient(circle,#ff8a1f33,#0000 62%);animation:kfl .9s ease-out}
+@keyframes kfl{from{background-color:#ff6a0044}to{background-color:#ff6a0000}}
+.kcl{display:flex;gap:12px;padding:10px 16px;border-radius:99px;background:#1a0d08cc;box-shadow:0 0 0 3px #ffd36b,0 6px 18px #0008}
+.kcl i{width:26px;height:26px;border-radius:50%;background:#3a2412;box-shadow:inset 0 2px 4px #000a}
+.kcl i.on{background:radial-gradient(circle at 35% 30%,#ffe9a8,#ff8a1f 55%,#c2410c);box-shadow:0 0 18px 4px #ff8a1fcc}
+.khc.go .kcl i.on{background:radial-gradient(circle at 35% 30%,#f4ffd0,#8fe04a 55%,#3f9a1a);box-shadow:0 0 18px 4px #8fe04acc}
+.kcw{position:relative;display:grid;place-items:center}
+.kcn{font:400 clamp(90px,24vw,190px)/1 Bungee,Fraunces,Impact,sans-serif;background:linear-gradient(#fff3b0,#ffb21f 45%,#f26b1d 75%,#c2410c);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:3px #5a1e05;filter:drop-shadow(0 6px 0 #5a1e05) drop-shadow(0 0 26px #ff8a1f);animation:kpop .9s cubic-bezier(.2,1.5,.4,1) both}
+.khc.go .kcn{font-size:clamp(70px,19vw,150px);letter-spacing:.04em}
+@keyframes kpop{0%{transform:scale(2.6) rotate(-6deg);opacity:0}35%{transform:scale(.92) rotate(2deg);opacity:1}55%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.kcr{position:absolute;width:30vmin;height:30vmin;border-radius:50%;border:6px solid #ff8a1f;animation:kring .9s ease-out both}
+@keyframes kring{from{transform:scale(.3);opacity:.9}to{transform:scale(2.2);opacity:0}}
 </style></head>
 <body><div id="app"></div>
 <script>
@@ -317,14 +337,15 @@ const BANNERS=[['Orange','linear-gradient(135deg,var(--acc),#ffb27a)'],['Schwarz
 /* Farben für Bücher: Regenbogen, dann Schwarz, Grau, Weiß, Braun */
 const BCOL=['#e5484d','#f26b1d','#f5c518','#84cc16','#14b8a6','#3b82f6','#6366f1','#8b5cf6','#ec4899','#161616','#4a4a47','#8a8a85','#ffffff','#8b5e3c'];
 const ROLEN={admin:'Admin',moderator:'Moderator',schueler:'Schüler',gesperrt:'Gar nichts sehen'};
-const TY={book:{n:'Schulbücher',s:'Alle Schulbücher online',one:'Neues Buch'},stoff:{n:'Stoff',s:'Zusammenfassungen und Material',one:'Neuer Stoff'},notes:{n:'Mitschriften',s:'Eigene Notizen und GoodNotes-PDFs',one:'Neue Mitschrift'},all:{n:'Suche'}};
+const TY={book:{n:'Schulbücher',s:'Alle Schulbücher online',one:'Neues Buch'},stoff:{n:'Stoff',s:'Zusammenfassungen und Material',one:'Neuer Stoff'},notes:{n:'Mitschriften',s:'Arbeitsblätter, Tafelbilder und Notizen, nach Datum sortiert',one:'Neues Material'},all:{n:'Suche'}};
 
 /* ===== Version und Neuerungen: bei jedem Update VERSION erhöhen und oben einen Eintrag in CHANGELOG ergänzen ===== */
 const VERSION='2026-11-20.1';
 const CHANGELOG=[
+ {v:'2026-11-21.1',t:'Mitschriften als Zeitleiste, neuer Kart-Countdown',items:['Mitschriften sind jetzt eine Zeitleiste nach Datum der Stunde, gruppiert nach Woche und Monat. Wer gefehlt hat, wählt oben "Verpasst? Ab" und sieht den ganzen Stoff seit dem Tag.','Beim Hochladen wählst du Art (Arbeitsblatt, Tafelbild, Mitschrift, Hausaufgabe) und Datum der Stunde. Filtern geht nach Fach.','Kart-Rennen: Der Countdown hat jetzt orange Startlichter, eine große animierte Zahl und ein LOS! zum Start.']},
  {v:'2026-11-20.1',t:'Bookies, Item-Shop und Bookie Clicker',items:['Neu: Bookies. In Spielen sammelst du jetzt Punkte, die Bookies heißen. Du bekommst sie für Siege bei Tic Tac Toe und Schach, für Platzierungen im Kart-Rennen und im neuen Bookie Clicker.','Neu: Bookie Clicker. Klicke Bücher, kaufe Helfer und Verbesserungen und lass deine Bibliothek nach und nach von selbst wachsen.','Neu: Item-Shop (Knopf links neben der Glocke). Dort kaufst du Profil-Rahmen und neue Schachbretter, zum Beispiel ein lila oder ein goldenes. Mit dem i-Zeichen siehst du, wie du Bookies verdienst.','Deine Bookies siehst du in deinem Profil. In den Einstellungen unter Privatsphäre legst du fest, ob andere sie sehen. Standard ist privat.']},
  {v:'2026-11-19.9',t:'Neu: Schach',items:['Bei Spiele gibt es jetzt Schach im orangen STUDIQ-Look. Du spielst gegen den Computer (Leicht, Mittel, Schwer), zu zweit an einem Gerät oder online mit Freunden.','Online hat jeder sein eigenes Gerät. Du siehst, wann du dran bist, und kannst Remis anbieten oder aufgeben.','Alle Regeln sind dabei: Rochade, en passant, Umwandlung, Patt und Remis.']},
- {v:'2026-11-20.1',t:'KartFahrt0: neue Grafik, Eisabfahrt und Kakteen',items:['Das Kart-Rennen sieht jetzt viel besser aus: runde Karts, Himmel mit Sonne und Wolken, Berge, Bäume und Zielbanner.','Die Eisabfahrt ist jetzt eine einzige lange Abfahrt den Berg hinunter, kein Rundkurs mehr. Eisblöcke auf der Strecke bremsen dich stark ab.','In der Wüstenschlange stehen Kakteen am Rand. Wer sie berührt, wird langsamer.']},
+ {v:'2026-11-20.2',t:'KartFahrt0: neue Grafik, Eisabfahrt und Kakteen',items:['Das Kart-Rennen sieht jetzt viel besser aus: runde Karts, Himmel mit Sonne und Wolken, Berge, Bäume und Zielbanner.','Die Eisabfahrt ist jetzt eine einzige lange Abfahrt den Berg hinunter, kein Rundkurs mehr. Eisblöcke auf der Strecke bremsen dich stark ab.','In der Wüstenschlange stehen Kakteen am Rand. Wer sie berührt, wird langsamer.']},
  {v:'2026-11-19.8',t:'Admin-Center: Details, Bücher-Zugriff und sicheres Löschen',items:['Im Admin-Center kommst du jetzt mit einem Klick auf jeden Namen zum Profil. Oben siehst du, wie viele Admins, Moderatoren und Schüler es gibt.','Der Admin kann jeder Person den Zugriff auf die Bücherbibliothek geben oder wegnehmen. Wer keinen Zugriff hat, kann den Admin mit einem Knopf anschreiben und bekommt einen Hinweis, sobald er freigeschaltet ist.','Accounts löschen geht jetzt nur noch nach einer Sicherheitsfrage und mit einem Lösch-Passwort.']},
  {v:'2026-11-19.7',t:'Kart-Rennen: Bestenliste und Vollbild',items:['Neu: Bestenliste. Deine schnellste Zeit pro Strecke wird gespeichert, du siehst die Zeiten aller Spieler.','Das Kart-Rennen läuft jetzt im Vollbild. Mit „Vollbild beenden“ oder Menü kommst du zurück.']},
  {v:'2026-11-19.6',t:'Kart-Rennen: Auswahl und neue Steuerung',items:['Neuer Startbildschirm KartFahrt0 mit Animation. Danach wählst du Auto, Charakter (Hautton und Farbe) und zuletzt die Strecke.','Die Autos haben unterschiedliche Werte für Tempo, Start und Lenkung.','Steuerung: Links lenken, rechts Gas und Bremse. Am PC mit den Pfeiltasten, Gas gibst du jetzt selbst.','Bei Spiele ist der Knopf „Mit Freunden“ weg. Den Modus stellst du direkt im Spiel ein.']},
@@ -370,7 +391,8 @@ async function loadItems(){
  if(error){toast('Die Inhalte konnten nicht geladen werden.');return}
  const paths=data.filter(x=>x.cover_path).map(x=>x.cover_path),urls={};
  if(paths.length){const r=await sb.storage.from('uploads').createSignedUrls(paths,3600);(r.data||[]).forEach(o=>{if(o.signedUrl)urls[o.path]=o.signedUrl})}
- DB=data.map(x=>({id:x.id,type:x.type,title:x.title,fach:x.fach,stufe:x.stufe,land:x.land,color:x.color||COL[0],desc:x.descr||'',school:x.school||'',cover_path:x.cover_path,cover:urls[x.cover_path]||null,by:x.created_by,n:x.pages?.[0]?.count||0,pages:null,saved:true,at:x.created_at})).filter(x=>x.type!='book'||hasBooks());
+ DB=data.map(x=>({id:x.id,type:x.type,title:x.title,fach:x.fach,stufe:x.stufe,land:x.land,color:x.color||COL[0],desc:x.descr||'',school:x.school||'',cover_path:x.cover_path,cover:urls[x.cover_path]||null,by:x.created_by,n:x.pages?.[0]?.count||0,pages:null,saved:true,at:x.created_at,kind:x.kind||null,on:x.lesson_on||null})).filter(x=>x.type!='book'||hasBooks());
+ HASLD=data.length?'lesson_on' in data[0]:!(await sb.from('items').select('lesson_on').limit(1)).error;
 }
 async function loadPages(x){
  const{data}=await sb.from('pages').select('id,idx,path').order('idx').eq('item_id',x.id),ps=data||[],m={};
@@ -471,23 +493,23 @@ function render(){applyST();presInit();
 }
 const cover=x=>{const lt=lum(x.color||'#f26b1d')>.62;return `<div class="cv" style="background-color:${x.color};color:${lt?'#161616':'#fff'};${lt?'text-shadow:none;':''}${x.cover?`background-image:url('${x.cover}')`:''}">${x.cover?'':esc(x.title)}</div>`};
 const card=x=>`<div class="bk" onclick="go('view',{id:'${x.id}'})">${cover(x)}<b>${esc(x.title)}</b><small>${x.fach}, Klasse ${x.stufe}${P.t=='all'?', '+TY[x.type].n:''}, ${x.n} Seiten</small></div>`;
-const list=()=>{const f=F[P.t];return DB.filter(x=>(P.t=='all'||x.type==P.t&&x.stufe==f.stufe)&&(x.title+' '+x.fach+' '+x.desc).toLowerCase().includes(f.q.toLowerCase()))};
-const gr=()=>{const l=list();return l.length?l.map(card).join(''):`<p class="m">Hier ist noch nichts.${P.t!='all'&&can(P.t)?' Leg das Erste an.':''}</p>`};
+const list=()=>{const f=F[P.t];return DB.filter(x=>(P.t=='all'||x.type==P.t&&x.stufe==f.stufe)&&(x.title+' '+x.fach+' '+x.desc).toLowerCase().includes(f.q.toLowerCase())&&(!f.fach||x.fach==f.fach)&&(!f.from||dOf(x)>=f.from))};
+const gr=()=>{if(P.t=='notes')return tlh();const l=list();return l.length?l.map(card).join(''):`<p class="m">Hier ist noch nichts.${P.t!='all'&&can(P.t)?' Leg das Erste an.':''}</p>`};
 const fp=(k,v)=>{F[P.t][k]=v;render()};
 const fgo=()=>{const f=F[P.t];f.stufe?(f.go=1,render()):toast('Bitte wähle zuerst eine Klasse.')};
 const gs=q=>{F.all={go:1,q};go('sec',{t:'all'})};
 
 /* ===== Ordner anlegen / bearbeiten ===== */
-const nw=t=>{cur={type:t,title:'',fach:FACH[0],stufe:F[t].stufe||7,land:null,color:COL[0],desc:'',school:'',cover:null,pages:[],n:0};go('neu')};
+const nw=t=>{cur={type:t,title:'',fach:FACH[0],stufe:F[t].stufe||7,land:null,color:COL[0],desc:'',school:'',cover:null,pages:[],n:0,kind:'Arbeitsblatt',on:new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)};go('neu')};
 const sel=(k,o)=>`<select onchange="u('${k}',this.value)">${o.map(v=>`<option ${v==cur[k]?'selected':''}>${v}</option>`).join('')}</select>`;
 let it;const sched=()=>{clearTimeout(it);const c=cur;it=setTimeout(()=>flushItem(c),600)};
-async function flushItem(c=cur){clearTimeout(it);if(!c?.saved||!c.title.trim())return;const{error}=await sb.from('items').update({title:c.title.trim(),descr:c.desc,color:c.color,fach:c.fach,stufe:c.stufe,land:c.land,school:c.school}).eq('id',c.id);if(error)toast('Speichern hat nicht geklappt.')}
+async function flushItem(c=cur){clearTimeout(it);if(!c?.saved||!c.title.trim())return;const{error}=await sb.from('items').update({title:c.title.trim(),descr:c.desc,color:c.color,fach:c.fach,stufe:c.stufe,land:c.land,school:c.school,...(c.type=='notes'&&HASLD?{kind:c.kind,lesson_on:c.on}:{})}).eq('id',c.id);if(error)toast('Speichern hat nicht geklappt.')}
 const u=(k,v)=>{if(k=='stufe')v=+v;cur[k]=v;if(k=='title'||k=='color')pv();if(cur.saved)sched()};
 const pv=()=>{const e=$('#pv');if(e)e.innerHTML=cover(cur)};
 async function mkd(){
  if(!cur.title.trim())return toast('Bitte gib einen Titel ein.');
  if(!can(cur.type))return toast('Dafür hast du keine Berechtigung.');
- const{data,error}=await sb.from('items').insert({type:cur.type,title:cur.title.trim(),fach:cur.fach,stufe:cur.stufe,land:cur.land,color:cur.color,descr:cur.desc,school:cur.school}).select().single();
+ const{data,error}=await sb.from('items').insert({type:cur.type,title:cur.title.trim(),fach:cur.fach,stufe:cur.stufe,land:cur.land,color:cur.color,descr:cur.desc,school:cur.school,...(cur.type=='notes'&&HASLD?{kind:cur.kind,lesson_on:cur.on}:{})}).select().single();
  if(error)return toast('Anlegen hat nicht geklappt.');
  Object.assign(cur,{id:data.id,by:data.created_by,pages:[],n:0,saved:true,cover:null,cover_path:null});
  DB.unshift(cur);go('edit',{id:cur.id},1)
@@ -1267,6 +1289,18 @@ function presInit(){
  c.on('presence',{event:'sync'},()=>{const n=new Set(Object.keys(c.presenceState()));if([...n].sort().join()!=[...ONL].sort().join()){ONL=n;document.querySelectorAll('[data-pu]').forEach(e=>{const o=ONL.has(e.dataset.pu);e.classList.toggle('on',o);e.title=o?'Online':'Offline'})}});
  c.subscribe(async st=>{if(st=='SUBSCRIBED'&&!hide)await c.track({on:1})})}
 function sqOnl(v){localStorage.setItem('sq_hide_online',v?'0':'1');if(PRC){sb.removeChannel(PRC);PRC=null}presInit()}
+let HASLD=false;
+const KINDS=['Arbeitsblatt','Tafelbild','Mitschrift','Hausaufgabe','Sonstiges'],KD={Arbeitsblatt:'#f26b1d',Tafelbild:'#2f9e44',Mitschrift:'#1c7ed6',Hausaufgabe:'#ae3ec9',Sonstiges:'#868e96'};
+const dOf=x=>x.on||(x.at||'').slice(0,10)||new Date().toISOString().slice(0,10);
+const nf=()=>cur.type!='notes'?'':HASLD?`<label>Art</label>${sel('kind',KINDS)}<label>Datum der Stunde</label><input type="date" value="${cur.on||''}" oninput="u('on',this.value||null)">`:'<p class="m" style="margin:14px 0 0">Für Datum und Art führe bitte update13.sql in Supabase aus. Bis dahin wird das Upload-Datum benutzt.</p>';
+function fch(){if(P.t!='notes')return'';const f=F.notes,fs=[...new Set(DB.filter(x=>x.type=='notes'&&x.stufe==f.stufe).map(x=>x.fach))];
+ return `<div class="bar" style="margin-top:0">${fs.length>1?`<div class="chips" style="flex:1"><span class="chip ${f.fach?'':'on'}" onclick="fp('fach','')">Alle Fächer</span>${fs.map(a=>`<span class="chip ${f.fach==a?'on':''}" onclick="fp('fach','${a}')">${a}</span>`).join('')}</div>`:''}<label style="margin:0;display:flex;gap:8px;align-items:center">Verpasst? Ab <input type="date" style="width:auto" value="${f.from||''}" onchange="fp('from',this.value)"></label></div>`}
+function tlh(){const l=list().sort((a,b)=>dOf(b).localeCompare(dOf(a))||(b.at||'').localeCompare(a.at||''));
+ if(!l.length)return`<p class="m">Hier ist noch nichts.${can('notes')?' Lade das erste Material hoch.':''}</p>`;
+ const mon=d=>{const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-(x.getDay()+6)%7);return x.getTime()},w0=mon(new Date()),G=[];
+ l.forEach(x=>{const d=new Date(dOf(x)+'T12:00:00'),w=mon(d),g=w==w0?'Diese Woche':w==w0-6048e5?'Letzte Woche':d.toLocaleDateString('de-DE',{month:'long',year:'numeric'});let h=G[G.length-1];if(!h||h.g!=g)G.push(h={g,a:[]});h.a.push([x,d])});
+ return G.map(h=>`<div class="tlg"><h3>${h.g}</h3>${h.a.map(([x,d])=>`<div class="tli" onclick="go('view',{id:'${x.id}'})"><div class="tld"><b>${d.getDate()}</b><span>${d.toLocaleDateString('de-DE',{month:'short'})}</span></div><div class="tlc"><div class="tlt">${esc(x.title)}</div><div class="tlm"><i class="tlk" style="background:${KD[x.kind]||KD.Sonstiges}">${x.kind||'Material'}</i> ${x.fach} · ${x.n} Seiten · ${d.toLocaleDateString('de-DE',{weekday:'long'})}</div></div>${x.cover?`<img src="${x.cover}" alt="">`:''}</div>`).join('')}</div>`).join('')}
+const kcd=n=>{const lit=n>0?4-n:3;return `<div class="khc${n>0?'':' go'}"><div class="kcl">${[0,1,2].map(i=>`<i class="${i<lit?'on':''}"></i>`).join('')}</div><div class="kcw"><b class="kcr"></b><span class="kcn">${n>0?n:'LOS!'}</span></div></div>`};
 const STH={st_pink:{a:'#ec4899',l:'#fdf0f6',d:'#1f1218'},st_violet:{a:'#8b5cf6',l:'#f4f0fe',d:'#17131f'},st_blue:{a:'#0ea5e9',l:'#eef7fc',d:'#0f171c'},st_mint:{a:'#10b981',l:'#edf8f3',d:'#101a16'},st_red:{a:'#dc2626',l:'#fdf0f0',d:'#1e1212'},st_gold:{a:'#c9971c',l:'#fbf5e1',d:'#1b170c'}};
 (()=>{let c='',d='',e='';for(const k in STH){const t=STH[k];c+=`:root[data-st=${k}]{--acc:${t.a};--bg:${t.l}}`;d+=`:root:not([data-theme=light])[data-st=${k}]{--bg:${t.d}}`;e+=`:root[data-theme=dark][data-st=${k}]{--bg:${t.d}}`}const s=document.createElement('style');s.textContent=c+`@media(prefers-color-scheme:dark){${d}}`+e;document.head.append(s)})();
 function applyST(){const id=ME&&COS[ME.id]&&COS[ME.id].stheme;document.documentElement.dataset.st=STH[id]?id:''}
@@ -1649,7 +1683,7 @@ function kHud(){
   const me=KT.ks[0],ps=[kProg(me),...KT.ks.slice(1).map(kProg),...Object.values(KT.o).map(o=>o.p||0)],pl=ps.filter(q=>q>ps[0]).length+1,now=performance.now(),sec=((KT.state=='count'?0:(me.fin||now-KT.t0))/1000).toFixed(1);
   t=`<div class="khb">${KT.T.open?'Abfahrt '+Math.min(100,Math.round(me.idx/(KT.T.pts.length-1)*100))+' %':'Runde '+Math.min(LAPS,Math.max(1,me.lap))+'/'+LAPS}<br>Platz ${pl}/${ps.length}<br>${sec} s</div>`;
   if(KT.state=='lobby'){const os=Object.values(KT.o);t+=`<div class="khp" style="pointer-events:auto"><b>Startaufstellung</b><div>Du: ${me.rdy?'✓ bereit':'noch nicht bereit'}</div>${os.map(o=>`<div>${esc(o.n||'Spieler')}: ${o.r?'✓ bereit':'wartet …'}</div>`).join('')}${KT.mode!='multi'?'<div>Computer-Fahrer: ✓ bereit</div>':os.length?'':'<div>Warte auf Mitspieler …</div>'}${me.rdy?'':'<p style="margin:12px 0 0"><button class="btn o" onclick="kReady()">Bereit</button></p>'}</div>`}
-  if(KT.state=='count'){const n=3-Math.floor((now-KT.t0)/1000);t+=`<div class="khc">${n>0?n:'Los!'}</div>`}
+  if(KT.state=='count')t+=kcd(3-Math.floor((now-KT.t0)/1000));if(KT.state=='race'&&now-KT.t0<900)t+=kcd(0);
   if(KT.state=='done'){const f=[...KT.fin].sort((a,b)=>a.t-b.t).slice(0,6);t+=`<div class="khp" style="pointer-events:auto"><b>Im Ziel!</b>${KT.rec?`<div style="color:#f59f00;margin-bottom:6px">${KT.rec}</div>`:''}${f.map((r,i)=>`<div>${i+1}. ${esc(r.n)} · ${(r.t/1000).toFixed(1)} s</div>`).join('')}<p style="margin:10px 0 0"><button class="btn g" onclick="kBest()">Bestenliste</button></p></div>`}
  }
  if(h.dataset.s!=t){h.dataset.s=t;h.innerHTML=t}
@@ -1715,9 +1749,9 @@ person:()=>{const p=byId(P.u),me=p.id==ME.id,s=me?'':ql(p);return ptw(p,phead(p)
 sec:()=>{const t=P.t,f=F[t],T=TY[t];
 if(t=='book'&&!hasBooks())return bkLock();
 if(!f.go)return `<h1>${T.n}</h1><p class="m">${T.s}. Wähle zuerst deine Klasse.</p><div class="card"><label>Klasse</label><div class="chips">${STU.map(s=>`<span class="chip ${f.stufe==s?'on':''}" onclick="fp('stufe',${s})">${s}</span>`).join('')}</div><p style="margin:22px 0 0"><button class="btn o" onclick="fgo()">Ergebnisse anzeigen</button></p></div>`;
-return `<h1>${T.n}</h1><div class="bar">${t!='all'?`<span class="chip on" onclick="F['${t}'].go=0;render()">Klasse ${f.stufe}, ändern</span>`:''}<input placeholder="Suchen, zum Beispiel Deutsch" aria-label="Suche" value="${esc(f.q)}" oninput="F['${t}'].q=this.value;$('#gr').innerHTML=gr()">${t!='all'&&can(t)?`<button class="btn o" onclick="nw('${t}')">${T.one}</button>`:''}</div><div class="grid" id="gr">${gr()}</div>`},
-neu:()=>`<h1>${TY[cur.type].one}</h1><p class="m">Lege zuerst den Ordner an. Die Seiten lädst du im nächsten Schritt hoch.</p><div class="card"><label>Titel</label><input placeholder="Zum Beispiel Deutsch 7" oninput="u('title',this.value)" value="${esc(cur.title)}"><label>Fach</label>${sel('fach',FACH)}<label>Klasse</label>${sel('stufe',STU)}<p style="margin:22px 0 0"><button class="btn o" onclick="mkd()">Weiter</button></p></div>`,
-edit:()=>`<h1>${TY[cur.type].one} einrichten</h1><div class="ed"><div><div id="pv"></div><label>Cover (optional)</label><input type="file" accept="image/*" onchange="cov(this)"></div><div><label style="margin-top:0">Titel</label><input value="${esc(cur.title)}" oninput="u('title',this.value)"><label>Beschreibung (optional)</label><textarea rows="3" oninput="u('desc',this.value)">${esc(cur.desc)}</textarea><label>Farbe</label><div class="sw">${BCOL.map(c=>`<i class="${c==cur.color?'on':''}" style="background:${c}" onclick="u('color','${c}');this.parentNode.querySelectorAll('i').forEach(i=>i.classList.toggle('on',i==this))"></i>`).join('')}<input type="color" aria-label="Eigene Farbe" title="Eigene Farbe" value="${/^#[0-9a-f]{6}$/i.test(cur.color)?cur.color:'#f26b1d'}" style="width:30px;height:30px;padding:0;border:2px solid var(--bg);border-radius:50%;cursor:pointer;flex:none;background:none" oninput="u('color',this.value);this.parentNode.querySelectorAll('i').forEach(i=>i.classList.remove('on'))"></div><label>Fach</label>${sel('fach',FACH)}<label>Klasse</label>${sel('stufe',STU)}<label>Schule (optional)</label><input value="${esc(cur.school)}" oninput="u('school',this.value)"></div></div><h2>Seiten hochladen</h2><p class="m" style="margin:-4px 0 12px">Jede Seite wird sofort dauerhaft gespeichert.</p><label class="drop">Bilder oder PDFs auswählen, auch GoodNotes-Exporte<input type="file" multiple hidden accept="image/*,application/pdf" onchange="up(this)"></label><div class="thumbs" id="th"></div><button class="btn o" onclick="fin()">Fertig</button> <button class="btn g" style="margin-left:10px" onclick="del()">Ordner löschen</button>`,
+return `<h1>${T.n}</h1><div class="bar">${t!='all'?`<span class="chip on" onclick="F['${t}'].go=0;render()">Klasse ${f.stufe}, ändern</span>`:''}<input placeholder="Suchen, zum Beispiel Deutsch" aria-label="Suche" value="${esc(f.q)}" oninput="F['${t}'].q=this.value;$('#gr').innerHTML=gr()">${t!='all'&&can(t)?`<button class="btn o" onclick="nw('${t}')">${T.one}</button>`:''}</div>${fch()}<div class="${t=='notes'?'':'grid'}" id="gr">${gr()}</div>`},
+neu:()=>`<h1>${TY[cur.type].one}</h1><p class="m">Lege zuerst den Ordner an. Die Seiten lädst du im nächsten Schritt hoch.</p><div class="card"><label>Titel</label><input placeholder="Zum Beispiel Deutsch 7" oninput="u('title',this.value)" value="${esc(cur.title)}"><label>Fach</label>${sel('fach',FACH)}<label>Klasse</label>${sel('stufe',STU)}${nf()}<p style="margin:22px 0 0"><button class="btn o" onclick="mkd()">Weiter</button></p></div>`,
+edit:()=>`<h1>${TY[cur.type].one} einrichten</h1><div class="ed"><div><div id="pv"></div><label>Cover (optional)</label><input type="file" accept="image/*" onchange="cov(this)"></div><div><label style="margin-top:0">Titel</label><input value="${esc(cur.title)}" oninput="u('title',this.value)"><label>Beschreibung (optional)</label><textarea rows="3" oninput="u('desc',this.value)">${esc(cur.desc)}</textarea><label>Farbe</label><div class="sw">${BCOL.map(c=>`<i class="${c==cur.color?'on':''}" style="background:${c}" onclick="u('color','${c}');this.parentNode.querySelectorAll('i').forEach(i=>i.classList.toggle('on',i==this))"></i>`).join('')}<input type="color" aria-label="Eigene Farbe" title="Eigene Farbe" value="${/^#[0-9a-f]{6}$/i.test(cur.color)?cur.color:'#f26b1d'}" style="width:30px;height:30px;padding:0;border:2px solid var(--bg);border-radius:50%;cursor:pointer;flex:none;background:none" oninput="u('color',this.value);this.parentNode.querySelectorAll('i').forEach(i=>i.classList.remove('on'))"></div><label>Fach</label>${sel('fach',FACH)}<label>Klasse</label>${sel('stufe',STU)}${nf()}<label>Schule (optional)</label><input value="${esc(cur.school)}" oninput="u('school',this.value)"></div></div><h2>Seiten hochladen</h2><p class="m" style="margin:-4px 0 12px">Jede Seite wird sofort dauerhaft gespeichert.</p><label class="drop">Bilder oder PDFs auswählen, auch GoodNotes-Exporte<input type="file" multiple hidden accept="image/*,application/pdf" onchange="up(this)"></label><div class="thumbs" id="th"></div><button class="btn o" onclick="fin()">Fertig</button> <button class="btn g" style="margin-left:10px" onclick="del()">Ordner löschen</button>`,
 view:()=>VW.view0()+(cur.type!='book'?`<div id="soc">${socHTML()}</div>`:''),
 view0:()=>`<div class="bar" style="margin-bottom:0"><h1 style="flex:1;margin:0">${esc(cur.title)}</h1>${cur.pages.length?`<button class="btn o" onclick="rdOpen()">Lesemodus</button><button class="btn g" onclick="dl(0)">Seite als PDF</button><button class="btn g" onclick="dl(1)">Alles als PDF</button>`:''}<button class="btn g" onclick="go('fwd',{id:'${cur.id}'})">Weiterleiten</button>${canEdit(cur)?`<button class="btn g" onclick="go('edit',{id:'${cur.id}'})">Bearbeiten</button>`:''}</div><p class="m">${cur.fach}, Klasse ${cur.stufe}${cur.desc?'. '+esc(cur.desc):''}</p>${cur.pages.length?`<div class="stage"><button class="ib" aria-label="Zurückblättern" onclick="show(-1)">${ic('back')}</button><div class="book" id="bk" style="cursor:zoom-in" onclick="rdOpen()"></div><button class="ib nx" aria-label="Weiterblättern" onclick="show(1)">${ic('back')}</button></div><div class="pn" id="pn"></div>`:`<div class="card"><p class="m" style="margin-top:0">Noch keine Seiten.</p>${canEdit(cur)?`<button class="btn o" onclick="go('edit',{id:'${cur.id}'})">Seiten hochladen</button>`:''}</div>`}`,
 vokab:()=>{const mine=DK.filter(d=>d.owner==ME.id);return `<h1>Vokabeln</h1><p class="m">Erstelle Karteikarten-Stapel und übe sie. Am Ende jeder Runde siehst du deine Statistik. Stapel von anderen kannst du auch üben.</p><div class="card" style="max-width:none"><label style="margin-top:0">Neuer Stapel</label><div class="bar" style="margin:0"><input id="dn" maxlength="80" placeholder="Name, zum Beispiel Französisch Unit 3" onkeydown="event.key=='Enter'&&newDeck()"><button class="btn o" onclick="newDeck()">Anlegen</button></div></div><h2>Meine Stapel</h2><div class="grid">${mine.map(dcard).join('')||'<p class="m">Noch keine eigenen Stapel.</p>'}</div><h2>Stapel von anderen</h2><div class="bar" style="margin-top:0"><input placeholder="Suchen, zum Beispiel Latein" aria-label="Stapel suchen" value="${esc(DQ)}" oninput="DQ=this.value;$('#dg').innerHTML=dgr()"></div><div class="grid" id="dg">${dgr()}</div>`},
